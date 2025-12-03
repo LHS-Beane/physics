@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mousetrap Racer Project Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Calm Neutrals with Indigo Accent -->
+    <!-- Application Structure Plan: 
+         - Navigation: Sidebar with Overview, Car Rules, Report Guidelines, Sample Report, Physics Help, and Rubric.
+         - Sample Report: A dedicated view showing the exemplar report structure. Equations formatted with HTML subscript/superscript.
+         - Rubric: Updated table matching the user's specific 150-point scale.
+           - Theory updated to 20pts (grammar/length specified).
+           - Results updated to 15pts.
+           - Sources added (5pts).
+         - Tools: Grade calculator updated to 50-point distance scale. Data visualizer remains for analysis.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            color: #374151;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        .nav-link.active {
+            background-color: #4f46e5;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .page-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Sample Report Styles */
+        .sample-paper {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800">
+    <div class="flex h-screen bg-white">
+        
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 h-full bg-slate-100 p-5 shadow-lg flex flex-col gap-4 overflow-y-auto">
+            <h1 class="text-2xl font-bold text-indigo-700">Racer Hub</h1>
+            <div class="flex flex-col gap-2">
+                <a id="nav-overview" class="nav-link active" data-target="page-overview">Overview</a>
+                <a id="nav-car" class="nav-link" data-target="page-car">The Car Rules</a>
+                <a id="nav-report" class="nav-link" data-target="page-report">Report Guidelines</a>
+                <a id="nav-sample" class="nav-link" data-target="page-sample">Sample Report</a>
+                <a id="nav-physics" class="nav-link" data-target="page-physics">Physics & Math</a>
+                <a id="nav-rubric" class="nav-link" data-target="page-rubric">Grading Rubric</a>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="flex-1 h-full overflow-y-auto p-8 md:p-12">
+            
+            <!-- OVERVIEW PAGE -->
+            <div id="page-overview" class="page-content prose max-w-none">
+                <h1 class="text-indigo-600">🚀 The Mousetrap Racer Challenge</h1>
+                
+                <p class="text-xl">This application is your interactive guide to the Mousetrap Racer project. Use the navigation on the left to explore the project requirements, calculation hints, and grading.</p>
+                
+                <h2>Project Objective</h2>
+                <p>Your challenge is to design, build, and test a vehicle powered *only* by the energy stored in one or two standard mousetraps. You will then analyze the physics of your car's motion in a formal lab report.</p>
+                
+                <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500 not-prose my-6">
+                    <h3 class="text-lg font-bold text-indigo-800">Quick Links</h3>
+                    <ul class="mt-2 space-y-1">
+                        <li>👉 <strong>Start Building:</strong> Check "The Car Rules" tab.</li>
+                        <li>👉 <strong>Start Writing:</strong> Check the "Sample Report" tab.</li>
+                        <li>👉 <strong>Check Grade:</strong> Use the Calculator in the "Grading Rubric" tab.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CAR RULES PAGE -->
+            <div id="page-car" class="page-content hidden prose max-w-none">
+                <h1 class="text-indigo-600">The Car: Rules & Performance</h1>
+                
+                <h2>Group Size & Distance Goal</h2>
+                <ul class="list-disc pl-5">
+                    <li><strong>Groups of 1-2 students:</strong> Your car must travel a minimum distance of <strong>10.0 meters</strong>.</li>
+                    <li><strong>Groups of 3 students:</strong> Your car must travel a minimum distance of <strong>15.0 meters</strong>.</li>
+                </ul>
+                
+                <h2>Car Construction Rules</h2>
+                <ol class="list-decimal pl-5">
+                    <li><strong>Power:</strong> The car must be powered by <strong>1 or 2 standard mousetraps</strong> (provided). No other energy sources (batteries, elastic bands, CO2).</li>
+                    <li><strong>Materials:</strong> Completely homemade. <strong>NO</strong> pre-made kits, Legos, K'nex, Erector sets.</li>
+                    <li><strong>Wheels:</strong> At least <strong>3 wheels</strong> required.</li>
+                    <li><strong>Launch:</strong> Start from stationary. No pushing.</li>
+                </ol>
+            </div>
+
+            <!-- REPORT GUIDELINES PAGE -->
+            <div id="page-report" class="page-content hidden prose max-w-none">
+                <h1 class="text-indigo-600">Report Requirements</h1>
+                <p>Your lab report must be formatted professionally and include detailed answers to the following sections:</p>
+
+                <ol class="list-decimal pl-5 space-y-4">
+                    <li><strong>Title Page:</strong> Student Name, Partner Name, Date, Title.</li>
+                    <li><strong>Objective (3-5 sentences):</strong> 
+                        <br>What was the goal and objective of this project? Did you meet the requirements?</li>
+                    <li><strong>Procedure & Diagrams:</strong> 
+                        <br>What materials did you use? Include diagrams of your project with measurements (Top and Side view). Your diagram will need to match your car and include all of your measurements.</li>
+                    <li><strong>Data Tables:</strong> 
+                        <ul class="list-disc pl-5 mt-2">
+                            <li><strong>Table 1 (Raw):</strong> Time to Snap, Distance to Snap, Snap to Stop Time, Snap to Stop Distance.</li>
+                            <li><strong>Table 2 (Calculated):</strong> Acceleration to Snap, Velocity at Snap, Kinetic Energy at Snap, Acceleration to Stop, Work to Stop.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sample Calculations:</strong> 
+                        <br>For each different equation used, show one sample calculation (Equation used, Work with numbers, Answer).</li>
+                    <li><strong>Physics (1-2 Paragraphs):</strong> 
+                        <br>Discuss different concepts in physics (Newton's Laws, Energy, Friction) that go into making a mousetrap car be successful.</li>
+                    <li><strong>Results (5-7 sentences):</strong> 
+                        <br>What was the outcome of your project? What were the average values that you found for your car? If you were to modify your car, what would you change? Do you consider your car a success?</li>
+                    <li><strong>Sources:</strong> 
+                        <br>List references used for design or physics concepts in a standard format.</li>
+                </ol>
+
+                <hr class="my-8">
+                
+                <div class="not-prose">
+                    <h2 class="text-2xl font-bold mb-4 text-indigo-600">Data Visualizer Tool</h2>
+                    <p class="mb-4 text-slate-700">Visualize your trial data to find your best performance.</p>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <div class="chart-container mb-6">
+                            <canvas id="trialChart"></canvas>
+                        </div>
+                        
+                        <form id="dataForm" class="flex flex-col md:flex-row gap-4 items-end">
+                            <div class="flex-1 w-full">
+                                <label for="trialDistance" class="block text-sm font-medium text-slate-700">Total Distance (m)</label>
+                                <input type="number" id="trialDistance" name="trialDistance" step="0.01" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., 10.5">
+                            </div>
+                            <button type="submit" class="w-full md:w-auto px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add Trial</button>
+                            <button type="button" id="resetChartBtn" class="w-full md:w-auto px-4 py-2 bg-slate-500 text-white font-medium rounded-md shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2">Reset Chart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAMPLE REPORT PAGE -->
+            <div id="page-sample" class="page-content hidden">
+                <h1 class="text-3xl font-bold text-indigo-700 mb-6">Sample Report Reference</h1>
+                <div class="bg-white shadow-xl border border-slate-200 p-8 max-w-4xl mx-auto sample-paper text-slate-900">
+                    
+                    <!-- Sample Title Page -->
+                    <div class="text-center border-b-2 border-slate-100 pb-8 mb-8">
+                        <h2 class="text-4xl font-bold mb-4">Mousetrap Racer Lab Report</h2>
+                        <p class="text-xl mb-8">Physics 11/12</p>
+                        <p class="text-lg font-bold">Project Title: The "Snap-on-Speed" Roadster</p>
+                        <br><br>
+                        <p><strong>Student Name:</strong> John Doe</p>
+                        <p><strong>Partner Name:</strong> Jane Smith</p>
+                        <p><strong>Date:</strong> October 24, 2023</p>
+                    </div>
+
+                    <!-- Sample Content -->
+                    <div class="space-y-6">
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">1. Objective</h3>
+                            <p>The objective of this project was to design and construct a vehicle powered solely by the elastic potential energy of a standard mousetrap. The engineering goal was to maximize the transfer of this energy into kinetic energy to achieve a minimum travel distance of 10 meters. Our group successfully met this requirement, achieving a max distance of 12.5 meters.</p>
+                        </section>
+
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">2. Procedure and Diagrams</h3>
+                            <p class="mb-2"><strong>Materials:</strong> 1 Victor Mousetrap, 2 Balsa dowels, 4 DVDs, Balloon traction, Zip ties.</p>
+                            <div class="bg-slate-100 p-8 text-center border border-dashed border-slate-400 text-slate-500 italic">
+                                [Student Drawing: Top View & Side View with measurements in cm]
+                            </div>
+                        </section>
+
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">3. Mathematical Calculations & Data</h3>
+                            <p class="mb-2"><strong>Mass of Car:</strong> 0.185 kg</p>
+                            
+                            <h4 class="font-bold mt-4">Data Table 1: Raw Data</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse border border-black text-sm text-center mb-4">
+                                    <tr class="bg-slate-200">
+                                        <th class="border border-black p-1">Trial</th>
+                                        <th class="border border-black p-1">Time to Snap (<i>t</i><sub>1</sub>)</th>
+                                        <th class="border border-black p-1">Dist to Snap (<i>d</i><sub>1</sub>)</th>
+                                        <th class="border border-black p-1">Time to Stop (<i>t</i><sub>2</sub>)</th>
+                                        <th class="border border-black p-1">Dist to Stop (<i>d</i><sub>2</sub>)</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black p-1">AVG</td>
+                                        <td class="border border-black p-1">1.5 s</td>
+                                        <td class="border border-black p-1">0.90 m</td>
+                                        <td class="border border-black p-1">6.2 s</td>
+                                        <td class="border border-black p-1">8.4 m</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <h4 class="font-bold mt-4">Data Table 2: Calculated Variables</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse border border-black text-sm text-center mb-4">
+                                    <tr class="bg-slate-200">
+                                        <th class="border border-black p-1">Accel (Start)</th>
+                                        <th class="border border-black p-1">Velocity (Snap)</th>
+                                        <th class="border border-black p-1">Kinetic Energy</th>
+                                        <th class="border border-black p-1">Accel (Stop)</th>
+                                        <th class="border border-black p-1">Work</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black p-1">0.80 m/s²</td>
+                                        <td class="border border-black p-1">1.20 m/s</td>
+                                        <td class="border border-black p-1">0.133 J</td>
+                                        <td class="border border-black p-1">-0.19 m/s²</td>
+                                        <td class="border border-black p-1">-0.298 J</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">4. Sample Calculations</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div class="border p-4 bg-slate-50">
+                                    <strong>Accel to Snap:</strong><br>
+                                    <span class="block mt-1 font-mono text-xs text-slate-600"><i>a</i><sub>1</sub> = 2<i>d</i><sub>1</sub> / <i>t</i><sub>1</sub><sup>2</sup></span>
+                                    <span class="block mt-1"><i>a</i><sub>1</sub> = 2(0.9) / 1.5<sup>2</sup> = <strong>0.80 m/s²</strong></span>
+                                </div>
+                                <div class="border p-4 bg-slate-50">
+                                    <strong>Velocity at Snap:</strong><br>
+                                    <span class="block mt-1 font-mono text-xs text-slate-600"><i>v</i> = <i>a</i><sub>1</sub> × <i>t</i><sub>1</sub></span>
+                                    <span class="block mt-1"><i>v</i> = 0.80 × 1.5 = <strong>1.20 m/s</strong></span>
+                                </div>
+                                <div class="border p-4 bg-slate-50">
+                                    <strong>Kinetic Energy:</strong><br>
+                                    <span class="block mt-1 font-mono text-xs text-slate-600"><i>KE</i> = 0.5 × <i>m</i> × <i>v</i><sup>2</sup></span>
+                                    <span class="block mt-1"><i>KE</i> = 0.5(0.185)(1.20)<sup>2</sup> = <strong>0.133 J</strong></span>
+                                </div>
+                                <div class="border p-4 bg-slate-50">
+                                    <strong>Work to Stop:</strong><br>
+                                    <span class="block mt-1 font-mono text-xs text-slate-600"><i>W</i> = (<i>m</i> × <i>a</i><sub>2</sub>) × <i>d</i><sub>2</sub></span>
+                                    <span class="block mt-1"><i>W</i> = (0.185 × -0.19) × 8.4 = <strong>-0.294 J</strong></span>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">5. Physics Theory</h3>
+                            <p>To ensure success, we relied on the conservation of energy. The potential energy stored in the spring is the only source of power. By using a long lever arm, we decreased the force applied to the axle but increased the distance over which that force acted. We minimized negative acceleration (<i>a</i><sub>2</sub>) by reducing friction with CD wheels, allowing the Kinetic Energy (<i>KE</i>) to carry the car further.</p>
+                        </section>
+
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">6. Results</h3>
+                            <p>Our car was a success, reaching an average total distance of 9.3 meters. While slightly short of the 10m goal on average, our best trial was 10.0m. If we were to modify the car, I would increase traction on the rear wheels to prevent slipping at the start.</p>
+                        </section>
+                        
+                        <section>
+                            <h3 class="text-xl font-bold border-b border-black mb-2">7. Sources</h3>
+                            <ul class="list-disc pl-5">
+                                <li>Henderson, Tom. "Newton's Second Law." The Physics Classroom.</li>
+                                <li>"Mousetrap Car Physics." Real World Physics Problems.</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHYSICS & MATH PAGE -->
+            <div id="page-physics" class="page-content hidden prose max-w-none">
+                <h1 class="text-indigo-600">Physics Formulas</h1>
+                <p>Use these formulas for your "Calculations" section.</p>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg not-prose">
+                        <h3 class="text-lg font-bold text-indigo-800">1. Acceleration (Start) & Velocity</h3>
+                        <p class="text-sm text-slate-600 mb-2">During the "Snap" (Phase 1)</p>
+                        <code class="block bg-white p-2 rounded mb-2"><i>a</i><sub>1</sub> = (2<i>d</i><sub>1</sub>) / <i>t</i><sub>1</sub><sup>2</sup></code>
+                        <code class="block bg-white p-2 rounded"><i>v</i><sub>snap</sub> = <i>a</i><sub>1</sub> × <i>t</i><sub>1</sub></code>
+                    </div>
+
+                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg not-prose">
+                        <h3 class="text-lg font-bold text-purple-800">2. Kinetic Energy</h3>
+                        <p class="text-sm text-slate-600 mb-2">Energy at max speed (at the Snap)</p>
+                        <code class="block bg-white p-2 rounded"><i>KE</i> = 0.5 × <i>m</i> × (<i>v</i><sub>snap</sub>)<sup>2</sup></code>
+                    </div>
+
+                    <div class="bg-sky-50 border-l-4 border-sky-500 p-4 rounded-r-lg not-prose">
+                        <h3 class="text-lg font-bold text-sky-800">3. Acceleration (Stop) & Work</h3>
+                        <p class="text-sm text-slate-600 mb-2">Coasting to a stop (Phase 2)</p>
+                        <code class="block bg-white p-2 rounded mb-2"><i>a</i><sub>2</sub> = (-<i>v</i><sub>snap</sub>) / <i>t</i><sub>2</sub></code>
+                        <code class="block bg-white p-2 rounded"><i>W</i> = (<i>m</i> × <i>a</i><sub>2</sub>) × <i>d</i><sub>2</sub></code>
+                        <p class="text-xs text-slate-500 mt-1">*Work should be negative (energy removed by friction)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RUBRIC PAGE -->
+            <div id="page-rubric" class="page-content hidden prose max-w-none">
+                <h1 class="text-indigo-600">Grading Rubric</h1>
+                
+                <div class="not-prose mb-8">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-700">Distance Grade Calculator</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <p class="mb-4 text-sm text-slate-600">Calculate your "Distance" score (Max 50 points).</p>
+                        <form id="gradeCalculator" class="flex flex-col md:flex-row gap-4 items-end">
+                            <div class="flex-1 w-full">
+                                <label for="groupSize" class="block text-sm font-medium text-slate-700">Group Size</label>
+                                <select id="groupSize" name="groupSize" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <option value="1-2">1-2 Students (10m Goal)</option>
+                                    <option value="3">3 Students (15m Goal)</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 w-full">
+                                <label for="carDistance" class="block text-sm font-medium text-slate-700">Your Car's Distance (m)</label>
+                                <input type="number" id="carDistance" name="carDistance" step="0.01" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., 8.9">
+                            </div>
+                            <button type="submit" class="w-full md:w-auto px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Calculate</button>
+                        </form>
+                        <div id="gradeResult" class="mt-4 text-xl font-bold text-indigo-700 h-8"></div>
+                    </div>
+                </div>
+
+                <h2>Detailed Rubric (150 Total Points)</h2>
+                <div class="overflow-x-auto not-prose">
+                    <table class="min-w-full divide-y divide-slate-300 border border-slate-300 bg-white">
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-sm font-bold text-slate-700 border-r">Category</th>
+                                <th class="px-4 py-3 text-center text-sm font-bold text-slate-700 border-r w-24">Points</th>
+                                <th class="px-4 py-3 text-left text-sm font-bold text-slate-700">Criteria Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <!-- On Time -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">On Time</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">0</td>
+                                <td class="px-4 py-2 text-sm">Report submitted by deadline. <span class="text-red-600">(-5 points per day late)</span></td>
+                            </tr>
+                            <!-- In Class Work 1 -->
+                            <tr class="bg-green-50">
+                                <td class="px-4 py-2 font-medium border-r">In-Class Work (Day 1)</td>
+                                <td class="px-4 py-2 text-center font-bold text-green-700 border-r">10</td>
+                                <td class="px-4 py-2 text-sm">On-task, collaborative, used building time effectively, clean workspace.</td>
+                            </tr>
+                            <!-- In Class Work 2 -->
+                            <tr class="bg-green-50">
+                                <td class="px-4 py-2 font-medium border-r">In-Class Work (Day 2)</td>
+                                <td class="px-4 py-2 text-center font-bold text-green-700 border-r">10</td>
+                                <td class="px-4 py-2 text-sm">On-task, collaborative, used building time effectively, clean workspace.</td>
+                            </tr>
+                            <!-- Distance -->
+                            <tr class="bg-indigo-50">
+                                <td class="px-4 py-2 font-medium border-r">Distance Car Traveled</td>
+                                <td class="px-4 py-2 text-center font-bold text-indigo-700 border-r">50</td>
+                                <td class="px-4 py-2 text-sm">
+                                    Car travels required distance (10m or 15m).<br>
+                                    <span class="text-xs text-slate-500">Grading Scale: 50, 40, 30, 20, 10 based on performance.</span>
+                                </td>
+                            </tr>
+                            <!-- Construction (Pass/Fail) -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Construction</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">0</td>
+                                <td class="px-4 py-2 text-sm">Checks for homemade materials, 3+ wheels, and mousetrap power. Required to test.</td>
+                            </tr>
+                            <!-- Title Page -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Title Page</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">2</td>
+                                <td class="px-4 py-2 text-sm">Professional formatting (Name, Partner, Date).</td>
+                            </tr>
+                            <!-- Objective -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Objective</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">3</td>
+                                <td class="px-4 py-2 text-sm">States a clear objective and goal.</td>
+                            </tr>
+                            <!-- Diagrams -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Procedure & Diagrams</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">10</td>
+                                <td class="px-4 py-2 text-sm">Drawn and labeled (Top/Side views) with specific measurements.</td>
+                            </tr>
+                            <!-- Math -->
+                            <tr class="bg-indigo-50">
+                                <td class="px-4 py-2 font-medium border-r">Mathematical Calculations</td>
+                                <td class="px-4 py-2 text-center font-bold text-indigo-700 border-r">25</td>
+                                <td class="px-4 py-2 text-sm">
+                                    - Formatted Calculations with examples in appropriate data tables.<br>
+                                    - For Both Before/After Snap: Accel, Work, KE, Velocity at Snap.
+                                </td>
+                            </tr>
+                            <!-- Theory -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Theory</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">20</td>
+                                <td class="px-4 py-2 text-sm">2 paragraphs that relate the concepts with appropriate use of grammar.</td>
+                            </tr>
+                            <!-- Results -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Results</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">15</td>
+                                <td class="px-4 py-2 text-sm">How did your car do? Restate results. What could you improve? (5-7 sentences).</td>
+                            </tr>
+                            <!-- Sources -->
+                            <tr>
+                                <td class="px-4 py-2 font-medium border-r">Sources</td>
+                                <td class="px-4 py-2 text-center font-bold border-r">5</td>
+                                <td class="px-4 py-2 text-sm">Sources listed in appropriate format.</td>
+                            </tr>
+                            <!-- Bonuses -->
+                            <tr class="bg-yellow-50">
+                                <td class="px-4 py-2 font-medium border-r text-yellow-800">Bonuses</td>
+                                <td class="px-4 py-2 text-center font-bold border-r text-yellow-800">--</td>
+                                <td class="px-4 py-2 text-sm text-yellow-800">
+                                    1st Place (5pts), 2nd Place (3pts), 3rd Place (1pt).<br>
+                                    Bonus Hill / Accuracy / Race challenges.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Navigation Logic
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page-content');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    
+                    pages.forEach(page => {
+                        if (page.id === targetId) {
+                            page.classList.remove('hidden');
+                        } else {
+                            page.classList.add('hidden');
+                        }
+                    });
+                    
+                    navLinks.forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    
+                    link.classList.add('active');
+                });
+            });
+
+            // Grade Calculator Logic (Updated for 50 points)
+            const gradeCalculator = document.getElementById('gradeCalculator');
+            const gradeResult = document.getElementById('gradeResult');
+            
+            if (gradeCalculator) {
+                gradeCalculator.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const groupSize = document.getElementById('groupSize').value;
+                    const carDistance = parseFloat(document.getElementById('carDistance').value);
+                    
+                    if (isNaN(carDistance)) {
+                        gradeResult.textContent = 'Please enter a valid distance.';
+                        gradeResult.classList.remove('text-indigo-700');
+                        gradeResult.classList.add('text-red-600');
+                        return;
+                    }
+                    
+                    const goalDistance = (groupSize === '1-2') ? 10 : 15;
+                    // Formula: (Distance / Goal) * 50 points
+                    let score = (carDistance / goalDistance) * 50;
+                    score = Math.min(Math.max(score, 0), 50); // Cap at 50
+                    
+                    gradeResult.textContent = `Your Distance Score: ${score.toFixed(1)} / 50`;
+                    gradeResult.classList.add('text-indigo-700');
+                    gradeResult.classList.remove('text-red-600');
+                });
+            }
+
+            // Chart.js Logic (Existing)
+            const ctx = document.getElementById('trialChart');
+            if (ctx) {
+                const trialData = {
+                    labels: [],
+                    datasets: [{
+                        label: 'Total Distance (m)',
+                        data: [],
+                        backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
+                    }]
+                };
+
+                const trialChart = new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: trialData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Distance (m)' } },
+                            x: { title: { display: true, text: 'Trial Number' } }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { callbacks: { label: function(context) { return `Distance: ${context.parsed.y} m`; } } }
+                        }
+                    }
+                });
+
+                const dataForm = document.getElementById('dataForm');
+                const resetChartBtn = document.getElementById('resetChartBtn');
+
+                dataForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const distanceInput = document.getElementById('trialDistance');
+                    const distance = parseFloat(distanceInput.value);
+                    
+                    if (!isNaN(distance)) {
+                        const trialNum = trialData.labels.length + 1;
+                        trialData.labels.push(`Trial ${trialNum}`);
+                        trialData.datasets[0].data.push(distance);
+                        trialChart.update();
+                        distanceInput.value = '';
+                    }
+                });
+
+                resetChartBtn.addEventListener('click', () => {
+                    trialData.labels = [];
+                    trialData.datasets[0].data = [];
+                    trialChart.update();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
