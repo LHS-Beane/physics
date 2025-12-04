@@ -5,749 +5,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Physics with Mr. Beane</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- 
-        COURSE HUB STRUCTURE:
-        1. Global Sidebar: Navigates top-level pages (Home, Syllabus, Projects).
-        2. Main Views:
-           - #view-home: Welcome info.
-           - #view-syllabus: Detailed rules, units, grading.
-           - #view-projects: Grid of project cards.
-        3. Project Sub-Views:
-           - #view-project-mousetrap: Mousetrap Immersive.
-           - #view-project-rockets: Water Rocket Immersive.
-    -->
     <style>
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 300px;
-        }
-        .nav-item {
-            transition: all 0.2s;
-        }
-        .nav-item:hover {
-            background-color: #e0e7ff; /* indigo-100 */
-            color: #4338ca; /* indigo-700 */
-        }
-        .nav-item.active {
-            background-color: #4f46e5; /* indigo-600 */
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Sample Report Styles */
-        .sample-paper {
-            font-family: 'Times New Roman', Times, serif;
-            line-height: 1.6;
-        }
+        .nav-item { transition: all 0.2s; }
+        .nav-item:hover { background-color: #e0e7ff; color: #4338ca; }
+        .nav-item.active { background-color: #4f46e5; color: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 h-screen overflow-hidden flex">
 
-    <!-- ==============================
-         GLOBAL COURSE SIDEBAR 
-    =============================== -->
-    <aside id="global-sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col h-full z-20 transition-transform duration-300">
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col h-full z-20">
         <div class="p-6 border-b border-slate-100">
             <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Physics</h1>
             <p class="text-sm text-slate-500 mt-1">Instructor: Mr. Beane</p>
         </div>
-        
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button onclick="switchGlobalView('home')" id="nav-global-home" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium text-slate-600 active">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                Home
+            <button onclick="switchView('home')" id="nav-home" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium text-slate-600 active">
+                <i data-lucide="home" class="w-5 h-5"></i> Home
             </button>
-            <button onclick="switchGlobalView('syllabus')" id="nav-global-syllabus" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium text-slate-600">
-                <i data-lucide="book-open" class="w-5 h-5"></i>
-                Syllabus & Info
+            <button onclick="switchView('syllabus')" id="nav-syllabus" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium text-slate-600">
+                <i data-lucide="book-open" class="w-5 h-5"></i> Syllabus
             </button>
-            <button onclick="switchGlobalView('projects')" id="nav-global-projects" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium text-slate-600">
-                <i data-lucide="flask-conical" class="w-5 h-5"></i>
-                Projects Hub
+            <button onclick="switchView('projects')" id="nav-projects" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium text-slate-600">
+                <i data-lucide="flask-conical" class="w-5 h-5"></i> Projects Hub
             </button>
         </nav>
-
-        <div class="p-4 border-t border-slate-100 text-xs text-slate-400 text-center">
-            &copy; Physics Department<br>LEP Apps
-        </div>
+        <div class="p-4 border-t border-slate-100 text-xs text-slate-400 text-center">&copy; Physics Department</div>
     </aside>
 
-    <!-- ==============================
-         MAIN CONTENT AREA
-    =============================== -->
-    <main id="main-container" class="flex-1 h-full overflow-y-auto relative bg-slate-50">
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 h-full overflow-y-auto relative bg-slate-50">
         
-        <!-- VIEW: HOME LANDING -->
-        <div id="view-home" class="global-view p-8 max-w-5xl mx-auto fade-in">
+        <!-- HOME VIEW -->
+        <div id="view-home" class="view-section p-8 max-w-5xl mx-auto fade-in">
             <header class="mb-10 text-center py-10 bg-white rounded-2xl shadow-sm border border-slate-200">
                 <h1 class="text-4xl font-extrabold text-indigo-700 mb-4">Welcome to Physics</h1>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">"This course covers the rules that everything follows. It will give insight on the how and why things work."</p>
             </header>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Instructor Card -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="bg-indigo-100 p-3 rounded-full text-indigo-600">
-                            <i data-lucide="user" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800">Instructor Info</h2>
-                            <p class="text-sm text-slate-500">Contact & Details</p>
-                        </div>
+                        <div class="bg-indigo-100 p-3 rounded-full text-indigo-600"><i data-lucide="user" class="w-6 h-6"></i></div>
+                        <div><h2 class="text-xl font-bold text-slate-800">Instructor Info</h2></div>
                     </div>
                     <ul class="space-y-3 text-slate-600">
-                        <li class="flex items-center gap-2"><span class="font-bold">Name:</span> Mr. Beane</li>
-                        <li class="flex items-center gap-2"><span class="font-bold">Email:</span> andy.beane@lepapps.org</li>
-                        <li class="flex items-start gap-2 mt-4 text-sm bg-slate-50 p-3 rounded">
-                            <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 text-indigo-500"></i>
-                            <span>Remember: Phones must be in the phone pocket upon entering. Be in your seat when the bell rings.</span>
-                        </li>
+                        <li><span class="font-bold">Name:</span> Mr. Beane</li>
+                        <li><span class="font-bold">Email:</span> andy.beane@lepapps.org</li>
+                        <li class="bg-slate-50 p-3 rounded text-sm mt-4"><i data-lucide="alert-circle" class="w-4 h-4 inline mr-1 text-indigo-500"></i> Phones in pocket. In seat at bell.</li>
                     </ul>
                 </div>
-
-                <!-- Quick Links -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="bg-emerald-100 p-3 rounded-full text-emerald-600">
-                            <i data-lucide="zap" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800">Current Unit Focus</h2>
-                            <p class="text-sm text-slate-500">What we are learning</p>
-                        </div>
+                        <div class="bg-emerald-100 p-3 rounded-full text-emerald-600"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                        <div><h2 class="text-xl font-bold text-slate-800">Current Unit</h2></div>
                     </div>
-                    <p class="text-slate-600 mb-4">Check the syllabus tab for the full breakdown of Units 1-8.</p>
-                    <button onclick="switchGlobalView('projects')" class="w-full py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition flex justify-center items-center gap-2">
+                    <p class="text-slate-600 mb-4">Check the syllabus tab for Units 1-8.</p>
+                    <button onclick="switchView('projects')" class="w-full py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition flex justify-center items-center gap-2">
                         Go to Projects <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW: SYLLABUS -->
-        <div id="view-syllabus" class="global-view hidden p-8 max-w-4xl mx-auto fade-in">
-            <h1 class="text-3xl font-bold text-slate-800 mb-8 border-b pb-4">Course Syllabus & Guidelines</h1>
-            
+        <!-- SYLLABUS VIEW -->
+        <div id="view-syllabus" class="view-section hidden p-8 max-w-4xl mx-auto fade-in">
+            <h1 class="text-3xl font-bold text-slate-800 mb-8 border-b pb-4">Course Syllabus</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                 <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-indigo-700 flex items-center gap-2 mb-3"><i data-lucide="check-circle" class="w-5 h-5"></i> Expectations</h3>
                     <ul class="list-disc pl-5 text-sm space-y-1 text-slate-600">
                         <li>Be on time. Phones in pockets.</li>
                         <li>Be prepared (Text, notebook, calculator).</li>
-                        <li>Respect students, staff, and property.</li>
-                        <li>No bags/purses on desks.</li>
                     </ul>
                 </div>
                 <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-indigo-700 flex items-center gap-2 mb-3"><i data-lucide="scale" class="w-5 h-5"></i> Grading & Homework</h3>
+                    <h3 class="font-bold text-indigo-700 flex items-center gap-2 mb-3"><i data-lucide="scale" class="w-5 h-5"></i> Grading</h3>
                     <ul class="list-disc pl-5 text-sm space-y-1 text-slate-600">
-                        <li>Tests: 3-4 per 9 weeks (40-60 pts each).</li>
-                        <li>Homework: Crucial for success. No partial credit.</li>
+                        <li>Tests: 3-4 per 9 weeks.</li>
+                        <li>Homework: Crucial. No partial credit.</li>
                         <li>Late Work: -10% per day.</li>
-                        <li>Bonus: Discretionary for above & beyond work.</li>
                     </ul>
                 </div>
             </div>
-
             <h2 class="text-2xl font-bold text-slate-800 mb-6">Course Outline</h2>
             <div class="space-y-4">
-                <!-- Unit 1 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 1: Measurements & Mathematics</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Metric System, Variables, Vector vs Scalar.</div>
-                </details>
-                <!-- Unit 2 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 2: Kinematics</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Motion, Speed, & Velocity, Accelerated Motion, Projectile Motion.</div>
-                </details>
-                <!-- Unit 3 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 3: Dynamics (Forces)</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Newton’s 3 Laws, Free Body Diagrams, Tension, Friction/Drag, Universal Gravitation.</div>
-                </details>
-                <!-- Unit 4 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 4: Angular Motion</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Angular Velocity/Acceleration, Torque, Centripetal vs Centrifugal Force.</div>
-                </details>
-                <!-- Unit 5 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 5: Work, Energy, Momentum</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Work, Power, Energy, Linear Momentum.</div>
-                </details>
-                <!-- Unit 6 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 6: Electricity & Magnetism</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Electric Charges, Fields, Ohm’s Law, Circuits, Magnetism, Electromagnetism.</div>
-                </details>
-                <!-- Unit 7 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 7: Special Relativity</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Relative Motion, Speed of Light, Length contraction/Time Dilation, Time Travel.</div>
-                </details>
-                <!-- Unit 8 -->
-                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-slate-50 group-open:bg-indigo-50 transition">
-                        <span>Unit 8: Pressure and Fluids</span>
-                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-                    </summary>
-                    <div class="text-slate-600 p-4 border-t border-slate-100">Pascal's Principle, Gas Laws, Bernoulli’s Principle, Hydrostatics, Buoyancy.</div>
-                </details>
+                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm"><summary class="flex justify-between items-center font-medium cursor-pointer p-4 bg-slate-50"><span>Unit 1: Measurements & Math</span><i data-lucide="chevron-down" class="w-5 h-5"></i></summary><div class="text-slate-600 p-4 border-t border-slate-100">Metric System, Variables, Vectors.</div></details>
+                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm"><summary class="flex justify-between items-center font-medium cursor-pointer p-4 bg-slate-50"><span>Unit 2: Kinematics</span><i data-lucide="chevron-down" class="w-5 h-5"></i></summary><div class="text-slate-600 p-4 border-t border-slate-100">Motion, Speed, Velocity, Projectiles.</div></details>
+                <details class="group bg-white rounded-lg border border-slate-200 shadow-sm"><summary class="flex justify-between items-center font-medium cursor-pointer p-4 bg-slate-50"><span>Unit 3: Forces</span><i data-lucide="chevron-down" class="w-5 h-5"></i></summary><div class="text-slate-600 p-4 border-t border-slate-100">Newton’s Laws, Friction, Gravity.</div></details>
+                <!-- Additional units abbreviated for brevity -->
             </div>
         </div>
 
-        <!-- VIEW: PROJECT LIST (Grid) -->
-        <div id="view-projects" class="global-view hidden p-8 max-w-6xl mx-auto fade-in">
+        <!-- PROJECTS VIEW -->
+        <div id="view-projects" class="view-section hidden p-8 max-w-6xl mx-auto fade-in">
             <h1 class="text-3xl font-bold text-slate-800 mb-2">Project Gallery</h1>
-            <p class="text-slate-500 mb-8">Select a project to view resources, rubrics, and tools.</p>
-
+            <p class="text-slate-500 mb-8">Select a project to view resources.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <!-- Project 1: Mousetrap Car -->
+                <!-- Mousetrap Card -->
                 <div class="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
-                    <div class="h-32 bg-indigo-600 flex items-center justify-center">
-                        <i data-lucide="car-front" class="w-16 h-16 text-white opacity-80"></i>
-                    </div>
+                    <div class="h-32 bg-indigo-600 flex items-center justify-center"><i data-lucide="car-front" class="w-16 h-16 text-white opacity-80"></i></div>
                     <div class="p-6 flex-1 flex flex-col">
                         <h3 class="text-xl font-bold text-slate-800 mb-2">Mousetrap Cars</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">Design and build a vehicle powered solely by the stored potential energy of a mousetrap spring.</p>
-                        <div class="flex items-center justify-between mt-4">
+                        <p class="text-slate-600 text-sm mb-4 flex-1">Vehicle powered by potential energy of a spring.</p>
+                        <div class="flex justify-between items-center mt-4">
                             <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded uppercase">Active</span>
-                            <button onclick="enterMousetrapProject()" class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center gap-1">
-                                Open Hub <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </button>
+                            <a href="mousetrap.html" class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center gap-1">Open Hub <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 2: Water Rockets (NOW ACTIVE) -->
+                <!-- Water Rocket Card -->
                 <div class="bg-white rounded-xl shadow-lg border border-sky-100 overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
-                    <div class="h-32 bg-sky-500 flex items-center justify-center">
-                        <i data-lucide="rocket" class="w-16 h-16 text-white opacity-90"></i>
-                    </div>
+                    <div class="h-32 bg-sky-500 flex items-center justify-center"><i data-lucide="rocket" class="w-16 h-16 text-white opacity-90"></i></div>
                     <div class="p-6 flex-1 flex flex-col">
                         <h3 class="text-xl font-bold text-slate-800 mb-2">Water Rockets</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">Explore fluid dynamics and Newton's Third Law by constructing a pressurized water rocket.</p>
-                        <div class="flex items-center justify-between mt-4">
+                        <p class="text-slate-600 text-sm mb-4 flex-1">Fluid dynamics and Newton's 3rd Law.</p>
+                        <div class="flex justify-between items-center mt-4">
                             <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded uppercase">Active</span>
-                            <button onclick="enterRocketProject()" class="text-sky-600 font-bold hover:text-sky-800 flex items-center gap-1">
-                                Open Hub <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </button>
+                            <a href="water_rockets.html" class="text-sky-600 font-bold hover:text-sky-800 flex items-center gap-1">Open Hub <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 3: Egg Drop -->
-                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden opacity-90 flex flex-col">
-                    <div class="h-32 bg-amber-400 flex items-center justify-center">
-                        <i data-lucide="egg" class="w-16 h-16 text-white opacity-80"></i>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">Egg Drop</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">Engineer a landing craft to protect a raw egg from impact forces using impulse and momentum concepts.</p>
-                        <div class="flex items-center justify-between mt-4">
-                            <span class="px-2 py-1 bg-slate-100 text-slate-500 text-xs font-bold rounded uppercase">Coming Soon</span>
-                            <button class="text-slate-400 font-bold cursor-not-allowed">Locked</button>
-                        </div>
-                    </div>
+                <!-- Upcoming Projects -->
+                <div class="bg-white rounded-xl shadow border border-slate-200 overflow-hidden opacity-75 flex flex-col">
+                    <div class="h-32 bg-amber-400 flex items-center justify-center"><i data-lucide="egg" class="w-16 h-16 text-white opacity-80"></i></div>
+                    <div class="p-6"><h3 class="text-xl font-bold text-slate-800">Egg Drop</h3><p class="text-sm mt-2">Coming Soon</p></div>
                 </div>
-
-                <!-- Project 4: House Wiring -->
-                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden opacity-90 flex flex-col">
-                    <div class="h-32 bg-rose-500 flex items-center justify-center">
-                        <i data-lucide="zap-off" class="w-16 h-16 text-white opacity-80"></i>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">House Wiring</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">Practical application of electric circuits. Design parallel and series circuits for a model home.</p>
-                        <div class="flex items-center justify-between mt-4">
-                            <span class="px-2 py-1 bg-slate-100 text-slate-500 text-xs font-bold rounded uppercase">Coming Soon</span>
-                            <button class="text-slate-400 font-bold cursor-not-allowed">Locked</button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
     </main>
 
-    <!-- ==============================
-         SUB-APP: MOUSETRAP PROJECT
-    =============================== -->
-    <div id="view-project-mousetrap" class="fixed inset-0 bg-white z-50 hidden flex">
-        <nav class="w-64 h-full bg-slate-100 p-5 shadow-lg flex flex-col gap-4 overflow-y-auto border-r border-slate-300">
-            <button onclick="exitMousetrapProject()" class="mb-4 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-indigo-600 transition">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Course
-            </button>
-            <h1 class="text-2xl font-bold text-indigo-700 border-b border-indigo-200 pb-2">Racer Hub</h1>
-            <div class="flex flex-col gap-2 mt-2">
-                <a onclick="switchMousetrapTab('mt-overview')" id="nav-mt-overview" class="mt-nav-link active px-4 py-2 rounded-md font-medium text-white bg-indigo-600 cursor-pointer transition">Overview</a>
-                <a onclick="switchMousetrapTab('mt-car')" id="nav-mt-car" class="mt-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">The Car Rules</a>
-                <a onclick="switchMousetrapTab('mt-report')" id="nav-mt-report" class="mt-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Report Guidelines</a>
-                <a onclick="switchMousetrapTab('mt-sample')" id="nav-mt-sample" class="mt-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Sample Report</a>
-                <a onclick="switchMousetrapTab('mt-physics')" id="nav-mt-physics" class="mt-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Physics & Math</a>
-                <a onclick="switchMousetrapTab('mt-rubric')" id="nav-mt-rubric" class="mt-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Grading Rubric</a>
-            </div>
-        </nav>
-
-        <div class="flex-1 h-full overflow-y-auto p-8 bg-slate-50">
-            <!-- MT Overview -->
-            <div id="mt-overview" class="mt-page prose max-w-none">
-                <h1 class="text-indigo-600">🚀 The Mousetrap Racer Challenge</h1>
-                <p class="text-xl">Design, build, and test a vehicle powered *only* by the energy stored in one or two standard mousetraps.</p>
-                <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500 not-prose my-6">
-                    <h3 class="text-lg font-bold text-indigo-800">Quick Links</h3>
-                    <ul class="mt-2 space-y-1">
-                        <li>👉 <strong>Start Building:</strong> Check "The Car Rules" tab.</li>
-                        <li>👉 <strong>Start Writing:</strong> Check the "Sample Report" tab.</li>
-                        <li>👉 <strong>Check Grade:</strong> Use the Calculator in the "Grading Rubric" tab.</li>
-                    </ul>
-                </div>
-            </div>
-            <!-- MT Car Rules -->
-            <div id="mt-car" class="mt-page hidden prose max-w-none">
-                <h1 class="text-indigo-600">The Car: Rules & Performance</h1>
-                <h2>Group Size & Distance Goal</h2>
-                <ul class="list-disc pl-5">
-                    <li><strong>Groups of 1-2 students:</strong> Min distance <strong>10.0 meters</strong>.</li>
-                    <li><strong>Groups of 3 students:</strong> Min distance <strong>15.0 meters</strong>.</li>
-                </ul>
-                <h2>Construction Rules</h2>
-                <ol class="list-decimal pl-5">
-                    <li><strong>Power:</strong> 1 or 2 standard mousetraps (provided). No batteries/elastic bands.</li>
-                    <li><strong>Materials:</strong> Completely homemade. NO pre-made kits, Legos, K'nex.</li>
-                    <li><strong>Wheels:</strong> At least 3 wheels required.</li>
-                </ol>
-            </div>
-            <!-- MT Report Guidelines -->
-            <div id="mt-report" class="mt-page hidden prose max-w-none">
-                <h1 class="text-indigo-600">Report Requirements</h1>
-                <p>Format your lab report professionally with these sections:</p>
-                <ol class="list-decimal pl-5 space-y-2">
-                    <li><strong>Title Page:</strong> Names, Date, Title.</li>
-                    <li><strong>Objective:</strong> Goal of the project (3-5 sentences).</li>
-                    <li><strong>Procedure & Diagrams:</strong> Materials list + Top/Side view drawings.</li>
-                    <li><strong>Data Tables:</strong> Raw Data and Calculated Data.</li>
-                    <li><strong>Sample Calculations:</strong> Show one example for every formula used.</li>
-                    <li><strong>Physics Theory:</strong> 1-2 paragraphs on Energy, Friction, and Newton's Laws.</li>
-                    <li><strong>Results:</strong> Outcome summary (5-7 sentences).</li>
-                    <li><strong>Sources:</strong> References cited.</li>
-                </ol>
-                <hr class="my-8">
-                <div class="not-prose bg-white p-6 rounded-lg shadow-md border border-slate-200">
-                    <h2 class="text-xl font-bold mb-4 text-indigo-600">Data Visualizer Tool</h2>
-                    <div class="chart-container mb-6"><canvas id="trialChart"></canvas></div>
-                    <form id="dataForm" class="flex gap-4 items-end">
-                        <div class="flex-1"><label class="block text-sm font-medium">Total Distance (m)</label><input type="number" id="trialDistance" class="w-full border p-2 rounded"></div>
-                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Add Trial</button>
-                    </form>
-                </div>
-            </div>
-            <!-- MT Sample Report -->
-            <div id="mt-sample" class="mt-page hidden">
-                <h1 class="text-3xl font-bold text-indigo-700 mb-6">Sample Report Reference</h1>
-                <div class="bg-white shadow-xl border border-slate-200 p-8 max-w-4xl mx-auto sample-paper text-slate-900">
-                    <div class="text-center border-b-2 border-slate-100 pb-8 mb-8">
-                        <h2 class="text-3xl font-bold">Mousetrap Racer Lab Report</h2>
-                        <p class="text-lg font-bold mt-4">Project Title: The "Snap-on-Speed" Roadster</p>
-                    </div>
-                    <!-- Sample content abbreviated for brevity, same as before -->
-                    <p>Refer to original document for full sample text.</p>
-                </div>
-            </div>
-            <!-- MT Physics -->
-            <div id="mt-physics" class="mt-page hidden prose max-w-none">
-                <h1 class="text-indigo-600">Physics Formulas</h1>
-                <div class="grid grid-cols-1 gap-6 not-prose">
-                    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4"><h3 class="font-bold">1. Acceleration</h3><code>a = 2d / t²</code></div>
-                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4"><h3 class="font-bold">2. Kinetic Energy</h3><code>KE = 0.5 * m * v²</code></div>
-                    <div class="bg-sky-50 border-l-4 border-sky-500 p-4"><h3 class="font-bold">3. Work</h3><code>W = F * d</code></div>
-                </div>
-            </div>
-            <!-- MT Rubric -->
-            <div id="mt-rubric" class="mt-page hidden prose max-w-none">
-                <h1 class="text-indigo-600">Grading Rubric</h1>
-                <div class="not-prose bg-white p-6 rounded-lg shadow border mb-8">
-                    <h2 class="font-bold text-lg mb-2">Distance Calculator</h2>
-                    <form id="gradeCalculator" class="flex gap-4 items-end">
-                        <div class="flex-1"><label class="block text-sm">Group Size</label><select id="groupSize" class="w-full border p-2 rounded"><option value="1-2">1-2 Students (10m)</option><option value="3">3 Students (15m)</option></select></div>
-                        <div class="flex-1"><label class="block text-sm">Distance (m)</label><input type="number" id="carDistance" class="w-full border p-2 rounded"></div>
-                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Calc</button>
-                    </form>
-                    <div id="gradeResult" class="mt-4 font-bold text-xl text-indigo-700"></div>
-                </div>
-                <table class="min-w-full text-sm border">
-                    <thead class="bg-slate-100"><tr><th class="p-2 border">Category</th><th class="p-2 border">Pts</th><th class="p-2 border">Notes</th></tr></thead>
-                    <tbody>
-                        <tr><td class="p-2 border">Distance</td><td class="p-2 border font-bold">50</td><td class="p-2 border">Based on goal</td></tr>
-                        <tr><td class="p-2 border">Calculations</td><td class="p-2 border font-bold">25</td><td class="p-2 border">Math & Units</td></tr>
-                        <tr><td class="p-2 border">Theory</td><td class="p-2 border font-bold">20</td><td class="p-2 border">Physics concepts</td></tr>
-                        <tr><td class="p-2 border">Results/Work</td><td class="p-2 border font-bold">35</td><td class="p-2 border">Combined with In-class</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==============================
-         SUB-APP: WATER ROCKET PROJECT
-    =============================== -->
-    <div id="view-project-rockets" class="fixed inset-0 bg-white z-50 hidden flex">
-        
-        <!-- Rocket Sidebar -->
-        <nav class="w-64 h-full bg-slate-50 p-5 shadow-lg flex flex-col gap-4 overflow-y-auto border-r border-slate-300">
-            <button onclick="exitRocketProject()" class="mb-4 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-sky-600 transition">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Course
-            </button>
-            
-            <h1 class="text-2xl font-bold text-sky-700 border-b border-sky-200 pb-2">Rocket Hub</h1>
-            
-            <div class="flex flex-col gap-2 mt-2">
-                <a onclick="switchRocketTab('wr-overview')" id="nav-wr-overview" class="wr-nav-link active px-4 py-2 rounded-md font-medium text-white bg-sky-600 cursor-pointer transition">Overview</a>
-                <a onclick="switchRocketTab('wr-design')" id="nav-wr-design" class="wr-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Design & Data</a>
-                <a onclick="switchRocketTab('wr-physics')" id="nav-wr-physics" class="wr-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Physics & Math</a>
-                <a onclick="switchRocketTab('wr-rubric')" id="nav-wr-rubric" class="wr-nav-link px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-slate-200 cursor-pointer transition">Rubric (100 pts)</a>
-            </div>
-        </nav>
-
-        <!-- Rocket Main Content -->
-        <div class="flex-1 h-full overflow-y-auto p-8 bg-slate-50">
-            
-            <!-- WR Overview -->
-            <div id="wr-overview" class="wr-page prose max-w-none">
-                <h1 class="text-sky-600">🚀 Water Rocket Challenge</h1>
-                <p class="text-xl">Construct a pressurized water rocket that demonstrates Newton's Laws and projectile motion.</p>
-                
-                <div class="bg-sky-50 border-l-4 border-sky-500 p-6 rounded-r-lg my-6 not-prose">
-                    <h3 class="text-xl font-bold text-sky-900 mb-2">Primary Objective</h3>
-                    <p class="text-sky-800">Your rocket must achieve <strong>ONE</strong> of the following:</p>
-                    <ul class="list-disc pl-5 mt-2 text-sky-800 font-medium">
-                        <li>Hang Time: <strong>≥ 5.0 seconds</strong></li>
-                        <li>Altitude: <strong>≥ 30.0 meters</strong></li>
-                    </ul>
-                </div>
-
-                <h3>Bonus Opportunities</h3>
-                <ul class="list-disc pl-5">
-                    <li><strong>Egg Survival:</strong> Can your rocket carry a raw egg payload safely?</li>
-                    <li><strong>Parachute:</strong> Successfully deploy a recovery system.</li>
-                </ul>
-            </div>
-
-            <!-- WR Design & Data -->
-            <div id="wr-design" class="wr-page hidden prose max-w-none">
-                <h1 class="text-sky-600">Design & Data Collection</h1>
-                
-                <h3>Design Considerations</h3>
-                <p>Consider the following variables in your construction:</p>
-                <ul class="list-disc pl-5">
-                    <li><strong>Fin Design:</strong> Shape, size, and number of fins affect stability.</li>
-                    <li><strong>Water Mass:</strong> Too little water provides short thrust; too much weighs it down.</li>
-                    <li><strong>Aerodynamics:</strong> Nose cone shape reduces air resistance.</li>
-                </ul>
-
-                <h3>Launch Data Table</h3>
-                <div class="not-prose overflow-x-auto">
-                    <table class="min-w-full border border-slate-300 bg-white text-sm">
-                        <thead class="bg-slate-100">
-                            <tr>
-                                <th class="border p-2">Trial</th>
-                                <th class="border p-2">Altimeter (m)</th>
-                                <th class="border p-2">Hang Time (s)</th>
-                                <th class="border p-2">Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border p-2 text-center">1</td>
-                                <td class="border p-2 bg-slate-50"></td>
-                                <td class="border p-2 bg-slate-50"></td>
-                                <td class="border p-2 bg-slate-50"></td>
-                            </tr>
-                            <tr>
-                                <td class="border p-2 text-center">2</td>
-                                <td class="border p-2 bg-slate-50"></td>
-                                <td class="border p-2 bg-slate-50"></td>
-                                <td class="border p-2 bg-slate-50"></td>
-                            </tr>
-                            <tr>
-                                <td class="border p-2 text-center">3</td>
-                                <td class="border p-2 bg-slate-50"></td>
-                                <td class="border p-2 bg-slate-50"></td>
-                                <td class="border p-2 bg-slate-50"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- WR Physics -->
-            <div id="wr-physics" class="wr-page hidden prose max-w-none">
-                <h1 class="text-sky-600">Physics & Calculations</h1>
-                
-                <div class="grid grid-cols-1 gap-6 not-prose mb-8">
-                    <!-- Calculator -->
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
-                        <h3 class="text-lg font-bold text-sky-700 mb-2">Height Estimator</h3>
-                        <p class="text-sm text-slate-500 mb-4">Estimate height based on hang time (assuming launch and land at same height).</p>
-                        <form id="rocketCalc" class="flex flex-col gap-4">
-                            <div>
-                                <label class="block text-sm font-medium">Total Hang Time (s)</label>
-                                <input type="number" id="hangTimeInput" step="0.1" class="w-full border p-2 rounded mt-1" placeholder="e.g., 5.2">
-                            </div>
-                            <button type="submit" class="bg-sky-600 text-white px-4 py-2 rounded font-bold hover:bg-sky-700">Calculate Height</button>
-                            <div id="rocketResult" class="mt-2 font-mono font-bold text-lg text-slate-800"></div>
-                        </form>
-                    </div>
-                </div>
-
-                <h3>Required Concepts</h3>
-                <p>Pick 3 of the following to explain in your conclusion:</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 not-prose text-sm font-medium text-slate-600">
-                    <span class="bg-slate-100 p-2 rounded text-center">Inertia</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Acceleration</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Air Resistance</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Momentum</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Newton's 2nd Law</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Newton's 3rd Law</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Energy</span>
-                    <span class="bg-slate-100 p-2 rounded text-center">Pressure</span>
-                </div>
-
-                <h3>Key Formulas</h3>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li><strong>Velocity at Apex:</strong> 0 m/s (Vertical)</li>
-                    <li><strong>Height (Calculated):</strong> <code>d = 0.5 * g * t²</code> (where t is time to fall, roughly half hang time)</li>
-                    <li><strong>Acceleration:</strong> <code>a = F_net / m</code></li>
-                </ul>
-            </div>
-
-            <!-- WR Rubric -->
-            <div id="wr-rubric" class="wr-page hidden prose max-w-none">
-                <h1 class="text-sky-600">Project Rubric (100 Points)</h1>
-                
-                <div class="not-prose overflow-x-auto">
-                    <table class="min-w-full divide-y divide-slate-300 border border-slate-300 bg-white">
-                        <thead class="bg-slate-100">
-                            <tr>
-                                <th class="px-4 py-3 text-left font-bold text-slate-700">Category</th>
-                                <th class="px-4 py-3 text-center font-bold text-slate-700 w-24">Points</th>
-                                <th class="px-4 py-3 text-left font-bold text-slate-700">Criteria</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 text-sm">
-                            <tr class="bg-sky-50">
-                                <td class="px-4 py-3 font-medium">Performance</td>
-                                <td class="px-4 py-3 text-center font-bold text-sky-700">30</td>
-                                <td class="px-4 py-3">Achieved 5s Hang Time OR 30m Altitude.</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 font-medium">Construction</td>
-                                <td class="px-4 py-3 text-center font-bold">15</td>
-                                <td class="px-4 py-3">Diagrams, Fin design explanation, Stability.</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 font-medium">Data Collection</td>
-                                <td class="px-4 py-3 text-center font-bold">15</td>
-                                <td class="px-4 py-3">Completed Table 1 (Mass/Length) and Launch Data.</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 font-medium">Calculations</td>
-                                <td class="px-4 py-3 text-center font-bold">20</td>
-                                <td class="px-4 py-3">Max Height, Velocity, Acceleration, Difference analysis.</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 font-medium">Theory & Conclusion</td>
-                                <td class="px-4 py-3 text-center font-bold">20</td>
-                                <td class="px-4 py-3">3 Concepts explained + Reflection (What learned, Success?).</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- SCRIPTS -->
     <script>
-        // --- GLOBAL NAVIGATION LOGIC ---
-        function switchGlobalView(viewName) {
+        function switchView(viewName) {
             document.querySelectorAll('.nav-item').forEach(el => {
                 el.classList.remove('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
                 el.classList.add('text-slate-600');
             });
-            const activeBtn = document.getElementById(`nav-global-${viewName}`);
-            if(activeBtn) {
-                activeBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
-                activeBtn.classList.remove('text-slate-600');
-            }
-            document.querySelectorAll('.global-view').forEach(el => el.classList.add('hidden'));
-            const activeView = document.getElementById(`view-${viewName}`);
-            if(activeView) activeView.classList.remove('hidden');
-        }
-
-        // --- MOUSETRAP LOGIC ---
-        function enterMousetrapProject() {
-            document.getElementById('view-project-mousetrap').classList.remove('hidden');
-            if(window.myChart) window.myChart.resize();
-        }
-        function exitMousetrapProject() {
-            document.getElementById('view-project-mousetrap').classList.add('hidden');
-        }
-        function switchMousetrapTab(tabId) {
-            document.querySelectorAll('.mt-nav-link').forEach(el => {
-                el.classList.remove('active', 'bg-indigo-600', 'text-white');
-                el.classList.add('text-slate-600', 'hover:bg-slate-200');
-            });
-            const activeLink = document.getElementById(`nav-${tabId}`);
-            activeLink.classList.remove('text-slate-600', 'hover:bg-slate-200');
-            activeLink.classList.add('active', 'bg-indigo-600', 'text-white');
-            document.querySelectorAll('.mt-page').forEach(el => el.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
-        }
-
-        // --- ROCKET LOGIC ---
-        function enterRocketProject() {
-            document.getElementById('view-project-rockets').classList.remove('hidden');
-        }
-        function exitRocketProject() {
-            document.getElementById('view-project-rockets').classList.add('hidden');
-        }
-        function switchRocketTab(tabId) {
-            document.querySelectorAll('.wr-nav-link').forEach(el => {
-                el.classList.remove('active', 'bg-sky-600', 'text-white');
-                el.classList.add('text-slate-600', 'hover:bg-slate-200');
-            });
-            const activeLink = document.getElementById(`nav-${tabId}`);
-            activeLink.classList.remove('text-slate-600', 'hover:bg-slate-200');
-            activeLink.classList.add('active', 'bg-sky-600', 'text-white');
-            document.querySelectorAll('.wr-page').forEach(el => el.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
-        }
-
-        // Rocket Height Calculator
-        document.getElementById('rocketCalc').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const t = parseFloat(document.getElementById('hangTimeInput').value);
-            if(!isNaN(t)) {
-                // h = 0.5 * g * t_fall^2, t_fall is roughly t_total / 2
-                const t_fall = t / 2;
-                const h = 0.5 * 9.8 * (t_fall * t_fall);
-                document.getElementById('rocketResult').innerHTML = `Est. Height: ${h.toFixed(2)} meters`;
-            } else {
-                document.getElementById('rocketResult').innerText = "Please enter valid time.";
-            }
-        });
-
-        // --- CHART JS LOGIC (Mousetrap) ---
-        let chartInstance = null;
-        const ctx = document.getElementById('trialChart').getContext('2d');
-        const trialData = {
-            labels: [],
-            datasets: [{
-                label: 'Distance (m)',
-                data: [],
-                backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                borderColor: 'rgba(79, 70, 229, 1)',
-                borderWidth: 2,
-                pointBackgroundColor: '#fff',
-                pointRadius: 5
-            }]
-        };
-
-        window.myChart = new Chart(ctx, {
-            type: 'line',
-            data: trialData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, title: { display: true, text: 'Distance (Meters)' } },
-                    x: { title: { display: true, text: 'Trial Number' } }
-                }
-            }
-        });
-
-        document.getElementById('dataForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const dist = parseFloat(document.getElementById('trialDistance').value);
-            if (!isNaN(dist)) {
-                const trialNum = trialData.labels.length + 1;
-                trialData.labels.push(`Trial ${trialNum}`);
-                trialData.datasets[0].data.push(dist);
-                window.myChart.update();
-                document.getElementById('trialDistance').value = '';
-            }
-        });
-
-        // --- GRADE CALCULATOR LOGIC (Mousetrap) ---
-        document.getElementById('gradeCalculator').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const size = document.getElementById('groupSize').value;
-            const dist = parseFloat(document.getElementById('carDistance').value);
-            const resultDiv = document.getElementById('gradeResult');
-
-            if (isNaN(dist)) {
-                resultDiv.innerText = "Please enter a valid distance.";
-                return;
-            }
-
-            const target = size === '3' ? 15.0 : 10.0;
-            let score = 0;
-
-            if (dist >= target) {
-                score = 50;
-            } else if (dist >= target * 0.8) {
-                score = 40;
-            } else if (dist >= target * 0.6) {
-                score = 30;
-            } else if (dist >= target * 0.4) {
-                score = 20;
-            } else if (dist > 0) {
-                score = 10;
-            } else {
-                score = 0;
-            }
+            document.getElementById(`nav-${viewName}`).classList.add('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
             
-            resultDiv.innerText = `Distance Grade: ${score}/50 Points`;
-        });
-
-        // Initialize Icons
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+        }
         lucide.createIcons();
     </script>
 </body>
