@@ -16,7 +16,6 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 h-screen overflow-hidden flex">
 
-    <!-- SIDEBAR -->
     <aside class="w-64 bg-white border-r border-slate-200 flex flex-col h-full z-20">
         <div class="p-6 border-b border-slate-100">
             <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Physics</h1>
@@ -36,10 +35,8 @@
         <div class="p-4 border-t border-slate-100 text-xs text-slate-400 text-center">&copy; Physics Department</div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 h-full overflow-y-auto relative bg-slate-50">
         
-        <!-- HOME VIEW -->
         <div id="view-home" class="view-section p-8 max-w-5xl mx-auto fade-in">
             <header class="mb-10 text-center py-10 bg-white rounded-2xl shadow-sm border border-slate-200">
                 <h1 class="text-4xl font-extrabold text-indigo-700 mb-4">Welcome to Physics</h1>
@@ -70,7 +67,6 @@
             </div>
         </div>
 
-        <!-- SYLLABUS VIEW -->
         <div id="view-syllabus" class="view-section hidden p-8 max-w-4xl mx-auto fade-in">
             <h1 class="text-3xl font-bold text-slate-800 mb-8 border-b pb-4">Course Syllabus</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
@@ -95,17 +91,14 @@
                 <details class="group bg-white rounded-lg border border-slate-200 shadow-sm"><summary class="flex justify-between items-center font-medium cursor-pointer p-4 bg-slate-50"><span>Unit 1: Measurements & Math</span><i data-lucide="chevron-down" class="w-5 h-5"></i></summary><div class="text-slate-600 p-4 border-t border-slate-100">Metric System, Variables, Vectors.</div></details>
                 <details class="group bg-white rounded-lg border border-slate-200 shadow-sm"><summary class="flex justify-between items-center font-medium cursor-pointer p-4 bg-slate-50"><span>Unit 2: Kinematics</span><i data-lucide="chevron-down" class="w-5 h-5"></i></summary><div class="text-slate-600 p-4 border-t border-slate-100">Motion, Speed, Velocity, Projectiles.</div></details>
                 <details class="group bg-white rounded-lg border border-slate-200 shadow-sm"><summary class="flex justify-between items-center font-medium cursor-pointer p-4 bg-slate-50"><span>Unit 3: Forces</span><i data-lucide="chevron-down" class="w-5 h-5"></i></summary><div class="text-slate-600 p-4 border-t border-slate-100">Newton’s Laws, Friction, Gravity.</div></details>
-                <!-- Additional units abbreviated for brevity -->
             </div>
         </div>
 
-        <!-- PROJECTS VIEW -->
         <div id="view-projects" class="view-section hidden p-8 max-w-6xl mx-auto fade-in">
             <h1 class="text-3xl font-bold text-slate-800 mb-2">Project Gallery</h1>
             <p class="text-slate-500 mb-8">Select a project to view resources.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <!-- Mousetrap Card -->
                 <div class="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
                     <div class="h-32 bg-indigo-600 flex items-center justify-center"><i data-lucide="car-front" class="w-16 h-16 text-white opacity-80"></i></div>
                     <div class="p-6 flex-1 flex flex-col">
@@ -118,7 +111,6 @@
                     </div>
                 </div>
 
-                <!-- Water Rocket Card -->
                 <div class="bg-white rounded-xl shadow-lg border border-sky-100 overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
                     <div class="h-32 bg-sky-500 flex items-center justify-center"><i data-lucide="rocket" class="w-16 h-16 text-white opacity-90"></i></div>
                     <div class="p-6 flex-1 flex flex-col">
@@ -131,11 +123,18 @@
                     </div>
                 </div>
 
-                <!-- Upcoming Projects -->
-                <div class="bg-white rounded-xl shadow border border-slate-200 overflow-hidden opacity-75 flex flex-col">
+                <div class="bg-white rounded-xl shadow-lg border border-amber-100 overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
                     <div class="h-32 bg-amber-400 flex items-center justify-center"><i data-lucide="egg" class="w-16 h-16 text-white opacity-80"></i></div>
-                    <div class="p-6"><h3 class="text-xl font-bold text-slate-800">Egg Drop</h3><p class="text-sm mt-2">Coming Soon</p></div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Egg Drop</h3>
+                        <p class="text-slate-600 text-sm mb-4 flex-1">Impulse, Momentum, and structural integrity.</p>
+                        <div class="flex justify-between items-center mt-4">
+                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded uppercase">Active</span>
+                            <a href="/physics/docs/projects/eggdrop.html" class="text-amber-600 font-bold hover:text-amber-800 flex items-center gap-1">Open Hub <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
         </div>
 
