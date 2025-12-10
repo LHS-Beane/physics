@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Room Work & Power Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            color: #374151;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        .nav-link.active {
+            background-color: #2563eb; /* Blue-600 for Sports theme */
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .page-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Sample Report Styles */
+        .sample-paper {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+        }
+        
+        /* Printing Styles */
+        @media print {
+            nav, header, .no-print { display: none !important; }
+            .page-content { display: none !important; }
+            #page-report { display: block !important; }
+            body, .flex, main { 
+                display: block !important; 
+                height: auto !important; 
+                overflow: visible !important; 
+                background: white !important; 
+            }
+            main { padding: 0 !important; margin: 0 !important; }
+            .sample-paper {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            /* Ensure inputs look like text when printed */
+            input[type="text"], input[type="number"], input[type="date"] {
+                border: none;
+                background: transparent;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800">
+    <div class="flex h-screen bg-white">
+        
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 h-full bg-slate-100 p-5 shadow-lg flex flex-col gap-4 overflow-y-auto border-r border-slate-300 no-print">
+            <a href="/physics/index.html" class="mb-2 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Course
+            </a>
+
+            <h1 class="text-2xl font-bold text-blue-700 border-b border-blue-200 pb-2">Weight Room Hub</h1>
+            <div class="flex flex-col gap-2">
+                <a id="nav-overview" class="nav-link active" data-target="page-overview">Overview</a>
+                <a id="nav-formulas" class="nav-link" data-target="page-formulas">Formulas & Physics</a>
+                <a id="nav-data" class="nav-link bg-blue-50 border border-blue-200 text-blue-700" data-target="page-data">🏋️ Data Log</a>
+                <a id="nav-analysis" class="nav-link" data-target="page-analysis">⚡ Analysis Tools</a>
+                <a id="nav-report" class="nav-link" data-target="page-report">📄 View/Print Report</a>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="flex-1 h-full overflow-y-auto p-8 md:p-12">
+            
+            <!-- OVERVIEW PAGE -->
+            <div id="page-overview" class="page-content prose max-w-none">
+                <h1 class="text-blue-600">Work & Power in the Weight Room</h1>
+                
+                <p class="text-xl">Welcome to the interactive lab hub. In this activity, you will measure the physical work done by your muscles and calculate your power output compared to machines and food energy.</p>
+                
+                <h2>Lab Objectives</h2>
+                <ul class="list-disc pl-5">
+                    <li>Determine the <strong>Work</strong> done (Joules) lifting weights against gravity.</li>
+                    <li>Calculate the <strong>Power</strong> generated (Watts) by your muscles.</li>
+                    <li>Compare biological power to household appliances ("Man vs. Machine").</li>
+                    <li>Calculate the exercise required to burn off specific meals ("The Food Factor").</li>
+                </ul>
+
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 not-prose my-6">
+                    <h3 class="text-lg font-bold text-blue-800">Getting Started</h3>
+                    <p class="mb-2">Follow these steps to complete your lab report:</p>
+                    <ol class="list-decimal pl-5 space-y-1">
+                        <li>Go to the <strong>Data Log</strong> tab to enter your lifting numbers. Calculations happen automatically!</li>
+                        <li>Go to the <strong>Analysis Tools</strong> tab to compare your power to lightbulbs and burgers.</li>
+                        <li>Finally, click <strong>View/Print Report</strong> to see your finished lab sheet and save it as a PDF.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- FORMULAS PAGE -->
+            <div id="page-formulas" class="page-content hidden prose max-w-none">
+                <h1 class="text-blue-600">Physics Formulas & Conversions</h1>
+                <p>These formulas are built into the Data Log calculator, but you should understand how they work.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose">
+                    <div class="bg-white p-6 rounded-lg shadow border border-slate-200">
+                        <h3 class="font-bold text-lg text-slate-700 mb-2 border-b pb-1">1. Mass & Force</h3>
+                        <p class="text-sm text-slate-600 mb-2">Convert pounds to kg, then find weight (Force).</p>
+                        <code class="block bg-slate-100 p-2 rounded mb-2">Mass (kg) = lbs / 2.2</code>
+                        <code class="block bg-slate-100 p-2 rounded">Force (N) = Mass × 9.8 m/s²</code>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow border border-slate-200">
+                        <h3 class="font-bold text-lg text-slate-700 mb-2 border-b pb-1">2. Work & Power</h3>
+                        <p class="text-sm text-slate-600 mb-2">Work is energy transferred; Power is the rate of work.</p>
+                        <code class="block bg-slate-100 p-2 rounded mb-2">Work (J) = Force (N) × Distance (m)</code>
+                        <code class="block bg-slate-100 p-2 rounded">Power (W) = Work (J) / Time (s)</code>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow border border-slate-200">
+                        <h3 class="font-bold text-lg text-slate-700 mb-2 border-b pb-1">3. Calories (Energy)</h3>
+                        <p class="text-sm text-slate-600 mb-2">Converting mechanical energy to food energy.</p>
+                        <code class="block bg-slate-100 p-2 rounded">1 Food Calorie (kcal) = 4,184 Joules</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATA LOG (INTERACTIVE) -->
+            <div id="page-data" class="page-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-blue-700">Data Log</h1>
+                    <button id="btn-clear-data" class="text-sm text-red-500 hover:text-red-700 underline">Clear All Data</button>
+                </div>
+                
+                <p class="mb-6 text-slate-600">Enter your raw data below. The system will calculate Mass, Work, and Power automatically.</p>
+
+                <!-- Student Info -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-400">Student Name</label>
+                        <input type="text" id="student-name" class="w-full font-semibold border-b border-slate-300 focus:outline-none focus:border-blue-500" placeholder="Enter Name">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-400">Date</label>
+                        <input type="date" id="lab-date" class="w-full font-semibold border-b border-slate-300 focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+
+                <!-- Exercise Container -->
+                <div id="exercises-container">
+                    <!-- Exercise cards generated by JS -->
+                </div>
+            </div>
+
+            <!-- ANALYSIS PAGE -->
+            <div id="page-analysis" class="page-content hidden">
+                <h1 class="text-3xl font-bold text-blue-700 mb-6">Analysis Tools</h1>
+                
+                <!-- Man vs Machine -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 mb-8">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-4">
+                        <i data-lucide="zap" class="text-yellow-500"></i> Part 3: Man vs. Machine
+                    </h2>
+                    <p class="text-slate-600 mb-4 text-sm">Pick a household appliance. How many reps of your exercises would it take to power it for 1 hour?</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Appliance Name</label>
+                            <input type="text" id="appliance-name" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm border p-2" placeholder="e.g. 60W Lightbulb">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Power Rating (Watts)</label>
+                            <input type="number" id="appliance-watts" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm border p-2" placeholder="e.g. 60">
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-4 rounded border border-yellow-200 text-center">
+                        <div class="text-sm font-bold text-yellow-800 uppercase mb-1">Energy Required (1 Hour)</div>
+                        <div id="energy-req-display" class="text-3xl font-bold text-yellow-900">0 J</div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h4 class="font-bold text-sm text-slate-600 mb-2">Reps Needed to Power Device:</h4>
+                        <div id="machine-results" class="grid grid-cols-3 gap-2">
+                            <!-- JS Injected Results -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Food Factor -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 mb-8">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-4">
+                        <i data-lucide="utensils" class="text-orange-500"></i> Part 4: The Food Factor
+                    </h2>
+                    <p class="text-slate-600 mb-4 text-sm">Pick a meal. How many reps to burn it off? (1 kcal = 4184 Joules)</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Meal Name</label>
+                            <input type="text" id="meal-name" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm border p-2" placeholder="e.g. Slice of Pizza">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Calories (kcal)</label>
+                            <input type="number" id="meal-calories" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm border p-2" placeholder="e.g. 285">
+                        </div>
+                    </div>
+
+                    <div class="bg-orange-50 p-4 rounded border border-orange-200 text-center">
+                        <div class="text-sm font-bold text-orange-800 uppercase mb-1">Total Energy In Meal</div>
+                        <div id="food-energy-display" class="text-3xl font-bold text-orange-900">0 J</div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h4 class="font-bold text-sm text-slate-600 mb-2">Reps Needed to Burn Meal:</h4>
+                        <div id="food-results" class="grid grid-cols-3 gap-2">
+                            <!-- JS Injected Results -->
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- BMR -->
+                 <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-4">
+                        <i data-lucide="activity" class="text-green-500"></i> BMR (Cost of Existing)
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-slate-700">Your BMR (Calories/day)</label>
+                            <input type="number" id="bmr-value" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm border p-2" placeholder="e.g. 1600">
+                        </div>
+                        <a href="https://www.calculator.net/bmr-calculator.html" target="_blank" class="mt-6 px-4 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200 text-sm font-bold flex items-center gap-2">
+                            Calculate BMR <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORT PAGE (PREVIEW) -->
+            <div id="page-report" class="page-content hidden">
+                <div class="flex justify-between items-center mb-6 no-print">
+                    <h1 class="text-2xl font-bold text-slate-700">Lab Report Preview</h1>
+                    <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700 shadow flex items-center gap-2">
+                        <i data-lucide="printer"></i> Print / Save PDF
+                    </button>
+                </div>
+
+                <div class="bg-white shadow-xl border border-slate-200 p-8 max-w-4xl mx-auto sample-paper text-slate-900" id="report-container">
+                    <div class="text-center border-b-2 border-slate-100 pb-8 mb-8">
+                        <h2 class="text-4xl font-bold mb-2">Weight Room Work & Power Lab</h2>
+                        <p class="text-lg text-slate-500">Physics Lab Activity</p>
+                        <div class="mt-6 text-left inline-block">
+                             <p><strong>Name:</strong> <span id="rep-name"></span></p>
+                             <p><strong>Date:</strong> <span id="rep-date"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Exercises Report -->
+                    <h3 class="text-xl font-bold border-b border-black mb-4">Part 1: Data Collection</h3>
+                    <div id="report-exercises"></div>
+
+                    <!-- Analysis Report -->
+                    <h3 class="text-xl font-bold border-b border-black mb-4 mt-8">Part 2: Analysis</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg mb-2">Man vs. Machine</h4>
+                        <p><strong>Object:</strong> <span id="rep-app-name"></span> (<span id="rep-app-watts"></span> Watts)</p>
+                        <p><strong>Energy for 1 Hour:</strong> <span id="rep-app-energy"></span> Joules</p>
+                        <table class="w-full border-collapse border border-slate-300 text-sm mt-2">
+                            <tr class="bg-slate-100"><th class="border p-1">Exercise</th><th class="border p-1">Reps needed for 1 Hour</th></tr>
+                            <tbody id="rep-app-table"></tbody>
+                        </table>
+                        <div class="mt-2 border p-2 h-20 text-slate-400 italic">Reflection: Is it realistic for a human to power this device? (Write answer after printing)</div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg mb-2">The Food Factor</h4>
+                        <p><strong>Meal:</strong> <span id="rep-meal-name"></span> (<span id="rep-meal-cal"></span> kcal)</p>
+                        <p><strong>Total Energy:</strong> <span id="rep-meal-energy"></span> Joules</p>
+                        <table class="w-full border-collapse border border-slate-300 text-sm mt-2">
+                            <tr class="bg-slate-100"><th class="border p-1">Exercise</th><th class="border p-1">Reps needed to burn meal</th></tr>
+                            <tbody id="rep-meal-table"></tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Cost of Existence</h4>
+                        <p><strong>My BMR:</strong> <span id="rep-bmr"></span> Calories/day</p>
+                    </div>
+
+                    <div class="mt-8 text-center text-xs text-slate-400">
+                        Generated via Weight Room Hub
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <script>
+        // --- DATA STATE ---
+        const state = {
+            studentName: '',
+            date: new Date().toISOString().split('T')[0],
+            exercises: [
+                { id: 1, name: 'Bench Press', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] },
+                { id: 2, name: 'Squat', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] },
+                { id: 3, name: 'Deadlift', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] }
+            ],
+            appliance: { name: '', watts: '' },
+            meal: { name: '', calories: '' },
+            bmr: ''
+        };
+
+        // --- CALCULATIONS ---
+        function calculateRow(w, d, t) {
+            const weight = parseFloat(w);
+            const dist = parseFloat(d);
+            const time = parseFloat(t);
+            
+            if (isNaN(weight) || isNaN(dist) || isNaN(time) || time === 0) return null;
+
+            const mass = weight / 2.2;
+            const force = mass * 9.8;
+            const work = force * dist;
+            const power = work / time;
+            const kCal = work / 4184;
+
+            return { mass, force, work, power, kCal };
+        }
+
+        function getAverageWork(exIndex) {
+            let total = 0, count = 0;
+            state.exercises[exIndex].trials.forEach(t => {
+                const res = calculateRow(t.w, t.d, t.t);
+                if (res) { total += res.work; count++; }
+            });
+            return count > 0 ? total / count : 0;
+        }
+
+        // --- UI RENDERING ---
+
+        function renderDataLog() {
+            const container = document.getElementById('exercises-container');
+            container.innerHTML = '';
+
+            state.exercises.forEach((ex, exIdx) => {
+                let html = `
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 mb-6 overflow-hidden">
+                    <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">Ex #${exIdx+1}</span>
+                            <input type="text" value="${ex.name}" onchange="updateExName(${exIdx}, this.value)" class="font-bold text-lg bg-transparent border-b border-dashed border-slate-300 focus:outline-none w-48">
+                        </div>
+                        <div class="text-xs font-medium text-slate-500">
+                            Avg Work: <span id="avg-work-${exIdx}" class="text-blue-600 font-bold">0 J</span>
+                        </div>
+                    </div>
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                            <tr>
+                                <th class="p-2 w-16">Trial</th>
+                                <th class="p-2">Weight (lbs)</th>
+                                <th class="p-2">Dist (m)</th>
+                                <th class="p-2">Time (s)</th>
+                                <th class="p-2 text-blue-600">Work (J)</th>
+                                <th class="p-2 text-green-600">Power (W)</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                
+                ex.trials.forEach((trial, tIdx) => {
+                    const res = calculateRow(trial.w, trial.d, trial.t);
+                    html += `
+                    <tr class="border-b">
+                        <td class="p-2 text-slate-400 font-medium">${tIdx+1}</td>
+                        <td class="p-2"><input type="number" class="w-full border p-1 rounded" value="${trial.w}" oninput="updateTrial(${exIdx}, ${tIdx}, 'w', this.value)"></td>
+                        <td class="p-2"><input type="number" step="0.01" class="w-full border p-1 rounded" value="${trial.d}" oninput="updateTrial(${exIdx}, ${tIdx}, 'd', this.value)"></td>
+                        <td class="p-2"><input type="number" step="0.1" class="w-full border p-1 rounded" value="${trial.t}" oninput="updateTrial(${exIdx}, ${tIdx}, 't', this.value)"></td>
+                        <td class="p-2 font-mono text-blue-600 bg-blue-50/30">${res ? res.work.toFixed(1) : '-'}</td>
+                        <td class="p-2 font-mono text-green-600 bg-green-50/30">${res ? res.power.toFixed(1) : '-'}</td>
+                    </tr>`;
+                });
+
+                html += `</tbody></table></div>`;
+                container.innerHTML += html;
+            });
+            updateAveragesUI();
+        }
+
+        function updateTrial(exIdx, tIdx, field, val) {
+            state.exercises[exIdx].trials[tIdx][field] = val;
+            // Re-render only averages for performance, or just update row text if implemented finely
+            renderDataLog(); // Simple re-render for now to update calculated columns
+            updateAnalysis();
+            updateReport();
+        }
+
+        function updateExName(exIdx, val) {
+            state.exercises[exIdx].name = val;
+            updateAnalysis();
+            updateReport();
+        }
+
+        function updateAveragesUI() {
+            state.exercises.forEach((ex, i) => {
+                const avg = getAverageWork(i);
+                const el = document.getElementById(`avg-work-${i}`);
+                if(el) el.innerText = avg > 0 ? avg.toFixed(1) + ' J' : '0 J';
+            });
+        }
+
+        function updateAnalysis() {
+            // Appliance
+            const watts = parseFloat(state.appliance.watts) || 0;
+            const energyReq = watts * 3600;
+            document.getElementById('energy-req-display').innerText = energyReq.toLocaleString() + ' J';
+            
+            let machineHtml = '';
+            state.exercises.forEach((ex, i) => {
+                const avg = getAverageWork(i);
+                const reps = avg > 0 ? Math.ceil(energyReq / avg) : '-';
+                machineHtml += `<div class="p-2 bg-slate-50 rounded border text-center"><div class="text-xs text-slate-500 truncate">${ex.name}</div><div class="font-bold text-lg">${reps}</div></div>`;
+            });
+            document.getElementById('machine-results').innerHTML = machineHtml;
+
+            // Food
+            const cals = parseFloat(state.meal.calories) || 0;
+            const foodEnergy = cals * 4184;
+            document.getElementById('food-energy-display').innerText = foodEnergy.toLocaleString() + ' J';
+
+            let foodHtml = '';
+            state.exercises.forEach((ex, i) => {
+                const avg = getAverageWork(i);
+                const reps = avg > 0 ? Math.ceil(foodEnergy / avg) : '-';
+                foodHtml += `<div class="p-2 bg-slate-50 rounded border text-center"><div class="text-xs text-slate-500 truncate">${ex.name}</div><div class="font-bold text-lg">${reps}</div></div>`;
+            });
+            document.getElementById('food-results').innerHTML = foodHtml;
+        }
+
+        function updateReport() {
+            // Header
+            document.getElementById('rep-name').innerText = state.studentName || '[Name]';
+            document.getElementById('rep-date').innerText = state.date || '[Date]';
+
+            // Exercises
+            let exHtml = '';
+            state.exercises.forEach((ex, i) => {
+                const avg = getAverageWork(i);
+                exHtml += `
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-2">${ex.name} (Avg Work: ${avg.toFixed(1)} J)</h4>
+                    <table class="w-full border-collapse border border-slate-400 text-sm text-center">
+                        <tr class="bg-slate-100">
+                            <th class="border p-1">Trial</th><th class="border p-1">Wt(lbs)</th><th class="border p-1">Dist(m)</th><th class="border p-1">Time(s)</th><th class="border p-1">Work(J)</th><th class="border p-1">Power(W)</th>
+                        </tr>
+                        ${ex.trials.map((t, idx) => {
+                            const res = calculateRow(t.w, t.d, t.t);
+                            return `<tr>
+                                <td class="border p-1">${idx+1}</td>
+                                <td class="border p-1">${t.w}</td>
+                                <td class="border p-1">${t.d}</td>
+                                <td class="border p-1">${t.t}</td>
+                                <td class="border p-1">${res?res.work.toFixed(1):'-'}</td>
+                                <td class="border p-1">${res?res.power.toFixed(1):'-'}</td>
+                            </tr>`;
+                        }).join('')}
+                    </table>
+                </div>`;
+            });
+            document.getElementById('report-exercises').innerHTML = exHtml;
+
+            // Analysis
+            document.getElementById('rep-app-name').innerText = state.appliance.name || '-';
+            document.getElementById('rep-app-watts').innerText = state.appliance.watts || '-';
+            const watts = parseFloat(state.appliance.watts) || 0;
+            const energyReq = watts * 3600;
+            document.getElementById('rep-app-energy').innerText = energyReq.toLocaleString();
+
+            let appRows = '';
+            state.exercises.forEach((ex, i) => {
+                const avg = getAverageWork(i);
+                const reps = avg > 0 ? Math.ceil(energyReq / avg) : '-';
+                appRows += `<tr><td class="border p-1">${ex.name}</td><td class="border p-1">${reps}</td></tr>`;
+            });
+            document.getElementById('rep-app-table').innerHTML = appRows;
+
+            document.getElementById('rep-meal-name').innerText = state.meal.name || '-';
+            document.getElementById('rep-meal-cal').innerText = state.meal.calories || '-';
+            const cals = parseFloat(state.meal.calories) || 0;
+            const foodEnergy = cals * 4184;
+            document.getElementById('rep-meal-energy').innerText = foodEnergy.toLocaleString();
+
+            let mealRows = '';
+            state.exercises.forEach((ex, i) => {
+                const avg = getAverageWork(i);
+                const reps = avg > 0 ? Math.ceil(foodEnergy / avg) : '-';
+                mealRows += `<tr><td class="border p-1">${ex.name}</td><td class="border p-1">${reps}</td></tr>`;
+            });
+            document.getElementById('rep-meal-table').innerHTML = mealRows;
+
+            document.getElementById('rep-bmr').innerText = state.bmr || '-';
+        }
+
+        // --- INIT & EVENTS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderDataLog();
+
+            // Navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page-content');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    link.classList.add('active');
+                    pages.forEach(page => page.classList.add('hidden'));
+                    document.getElementById(targetId).classList.remove('hidden');
+                    if(targetId === 'page-report') updateReport(); // Ensure latest data
+                });
+            });
+
+            // Global Input Listeners
+            document.getElementById('student-name').addEventListener('input', (e) => state.studentName = e.target.value);
+            document.getElementById('lab-date').addEventListener('input', (e) => state.date = e.target.value);
+            
+            document.getElementById('appliance-name').addEventListener('input', (e) => { state.appliance.name = e.target.value; updateAnalysis(); });
+            document.getElementById('appliance-watts').addEventListener('input', (e) => { state.appliance.watts = e.target.value; updateAnalysis(); });
+            
+            document.getElementById('meal-name').addEventListener('input', (e) => { state.meal.name = e.target.value; updateAnalysis(); });
+            document.getElementById('meal-calories').addEventListener('input', (e) => { state.meal.calories = e.target.value; updateAnalysis(); });
+            
+            document.getElementById('bmr-value').addEventListener('input', (e) => { state.bmr = e.target.value; });
+
+            document.getElementById('btn-clear-data').addEventListener('click', () => {
+                if(confirm("Clear all measurements?")) {
+                    state.exercises.forEach(ex => ex.trials = [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}]);
+                    state.appliance = { name: '', watts: '' };
+                    state.meal = { name: '', calories: '' };
+                    renderDataLog();
+                    // Clear inputs manually since they aren't fully React-bound
+                    document.getElementById('appliance-name').value = '';
+                    document.getElementById('appliance-watts').value = '';
+                    document.getElementById('meal-name').value = '';
+                    document.getElementById('meal-calories').value = '';
+                    updateAnalysis();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
