@@ -38,17 +38,17 @@
             line-height: 1.6;
         }
         
-        /* Printing Styles */
+        /* Printing Styles - UPDATED TO FIX MENU BAR ISSUE */
         @media print {
-            nav, header, .no-print { display: none !important; }
-            .page-content { display: none !important; }
-            #page-report { display: block !important; }
+            /* 1. Reset Layout: Force containers to block to remove scrollbars */
             body, .flex, main { 
                 display: block !important; 
                 height: auto !important; 
                 overflow: visible !important; 
                 background: white !important; 
             }
+            
+            /* 2. Remove Margins/Padding for clean print */
             main { padding: 0 !important; margin: 0 !important; }
             .sample-paper {
                 box-shadow: none !important;
@@ -58,6 +58,13 @@
                 margin: 0 !important;
             }
             input { border: none !important; background: transparent !important; }
+
+            /* 3. Hide Elements: Defined LAST to ensure they override layout resets */
+            nav, header, .no-print { display: none !important; }
+            .page-content { display: none !important; }
+            
+            /* 4. Show only the Report */
+            #page-report { display: block !important; }
         }
     </style>
 </head>
