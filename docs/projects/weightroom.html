@@ -21,7 +21,7 @@
             color: #111827;
         }
         .nav-link.active {
-            background-color: #2563eb; /* Blue-600 for Sports theme */
+            background-color: #be123c; /* Rose-700 for Gym theme */
             color: #ffffff;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
@@ -57,12 +57,7 @@
                 padding: 0 !important;
                 margin: 0 !important;
             }
-            /* Ensure inputs look like text when printed */
-            input[type="text"], input[type="number"], input[type="date"] {
-                border: none;
-                background: transparent;
-                padding: 0;
-            }
+            input { border: none !important; background: transparent !important; }
         }
     </style>
 </head>
@@ -71,15 +66,15 @@
         
         <!-- Sidebar Navigation -->
         <nav class="w-64 h-full bg-slate-100 p-5 shadow-lg flex flex-col gap-4 overflow-y-auto border-r border-slate-300 no-print">
-            <a href="/physics/index.html" class="mb-2 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition">
+            <a href="/physics/index.html" class="mb-2 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-rose-600 transition">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Course
             </a>
 
-            <h1 class="text-2xl font-bold text-blue-700 border-b border-blue-200 pb-2">Weight Room Hub</h1>
+            <h1 class="text-2xl font-bold text-rose-700 border-b border-rose-200 pb-2">Weight Room Hub</h1>
             <div class="flex flex-col gap-2">
                 <a id="nav-overview" class="nav-link active" data-target="page-overview">Overview</a>
                 <a id="nav-formulas" class="nav-link" data-target="page-formulas">Formulas & Physics</a>
-                <a id="nav-data" class="nav-link bg-blue-50 border border-blue-200 text-blue-700" data-target="page-data">🏋️ Data Log</a>
+                <a id="nav-data" class="nav-link bg-rose-50 border border-rose-200 text-rose-700" data-target="page-data">🏋️ Data Log</a>
                 <a id="nav-analysis" class="nav-link" data-target="page-analysis">⚡ Analysis Tools</a>
                 <a id="nav-report" class="nav-link" data-target="page-report">📄 View/Print Report</a>
             </div>
@@ -90,7 +85,7 @@
             
             <!-- OVERVIEW PAGE -->
             <div id="page-overview" class="page-content prose max-w-none">
-                <h1 class="text-blue-600">Work & Power in the Weight Room</h1>
+                <h1 class="text-rose-600">Work & Power in the Weight Room</h1>
                 
                 <p class="text-xl">Welcome to the interactive lab hub. In this activity, you will measure the physical work done by your muscles and calculate your power output compared to machines and food energy.</p>
                 
@@ -102,11 +97,12 @@
                     <li>Calculate the exercise required to burn off specific meals ("The Food Factor").</li>
                 </ul>
 
-                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 not-prose my-6">
-                    <h3 class="text-lg font-bold text-blue-800">Getting Started</h3>
+                <div class="bg-rose-50 p-6 rounded-lg border-l-4 border-rose-500 not-prose my-6">
+                    <h3 class="text-lg font-bold text-rose-800">Getting Started</h3>
                     <p class="mb-2">Follow these steps to complete your lab report:</p>
                     <ol class="list-decimal pl-5 space-y-1">
-                        <li>Go to the <strong>Data Log</strong> tab to enter your lifting numbers. Calculations happen automatically!</li>
+                        <li>Go to the <strong>Data Log</strong> tab. Add the exercises you plan to do (e.g., Squat, Curl).</li>
+                        <li>Enter your numbers (Weight, Distance, Time). The math happens automatically!</li>
                         <li>Go to the <strong>Analysis Tools</strong> tab to compare your power to lightbulbs and burgers.</li>
                         <li>Finally, click <strong>View/Print Report</strong> to see your finished lab sheet and save it as a PDF.</li>
                     </ol>
@@ -115,7 +111,7 @@
 
             <!-- FORMULAS PAGE -->
             <div id="page-formulas" class="page-content hidden prose max-w-none">
-                <h1 class="text-blue-600">Physics Formulas & Conversions</h1>
+                <h1 class="text-rose-600">Physics Formulas & Conversions</h1>
                 <p>These formulas are built into the Data Log calculator, but you should understand how they work.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose">
@@ -144,21 +140,21 @@
             <!-- DATA LOG (INTERACTIVE) -->
             <div id="page-data" class="page-content hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-3xl font-bold text-blue-700">Data Log</h1>
+                    <h1 class="text-3xl font-bold text-rose-700">Data Log</h1>
                     <button id="btn-clear-data" class="text-sm text-red-500 hover:text-red-700 underline">Clear All Data</button>
                 </div>
                 
-                <p class="mb-6 text-slate-600">Enter your raw data below. The system will calculate Mass, Work, and Power automatically.</p>
+                <p class="mb-6 text-slate-600">Add your exercises and enter raw data. Mass, Work, and Power calculate automatically.</p>
 
                 <!-- Student Info -->
                 <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400">Student Name</label>
-                        <input type="text" id="student-name" class="w-full font-semibold border-b border-slate-300 focus:outline-none focus:border-blue-500" placeholder="Enter Name">
+                        <input type="text" id="student-name" class="w-full font-semibold border-b border-slate-300 focus:outline-none focus:border-rose-500" placeholder="Enter Name">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400">Date</label>
-                        <input type="date" id="lab-date" class="w-full font-semibold border-b border-slate-300 focus:outline-none focus:border-blue-500">
+                        <input type="date" id="lab-date" class="w-full font-semibold border-b border-slate-300 focus:outline-none focus:border-rose-500">
                     </div>
                 </div>
 
@@ -166,11 +162,16 @@
                 <div id="exercises-container">
                     <!-- Exercise cards generated by JS -->
                 </div>
+
+                <!-- Add Button -->
+                <button onclick="addExercise()" class="w-full py-3 border-2 border-dashed border-rose-200 rounded-lg text-rose-500 font-bold hover:bg-rose-50 hover:border-rose-300 transition flex items-center justify-center gap-2">
+                    <i data-lucide="plus-circle"></i> Add Another Exercise
+                </button>
             </div>
 
             <!-- ANALYSIS PAGE -->
             <div id="page-analysis" class="page-content hidden">
-                <h1 class="text-3xl font-bold text-blue-700 mb-6">Analysis Tools</h1>
+                <h1 class="text-3xl font-bold text-rose-700 mb-6">Analysis Tools</h1>
                 
                 <!-- Man vs Machine -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 mb-8">
@@ -197,7 +198,7 @@
                     
                     <div class="mt-4">
                         <h4 class="font-bold text-sm text-slate-600 mb-2">Reps Needed to Power Device:</h4>
-                        <div id="machine-results" class="grid grid-cols-3 gap-2">
+                        <div id="machine-results" class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             <!-- JS Injected Results -->
                         </div>
                     </div>
@@ -228,7 +229,7 @@
 
                     <div class="mt-4">
                         <h4 class="font-bold text-sm text-slate-600 mb-2">Reps Needed to Burn Meal:</h4>
-                        <div id="food-results" class="grid grid-cols-3 gap-2">
+                        <div id="food-results" class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             <!-- JS Injected Results -->
                         </div>
                     </div>
@@ -255,7 +256,7 @@
             <div id="page-report" class="page-content hidden">
                 <div class="flex justify-between items-center mb-6 no-print">
                     <h1 class="text-2xl font-bold text-slate-700">Lab Report Preview</h1>
-                    <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700 shadow flex items-center gap-2">
+                    <button onclick="window.print()" class="px-4 py-2 bg-rose-600 text-white rounded font-bold hover:bg-rose-700 shadow flex items-center gap-2">
                         <i data-lucide="printer"></i> Print / Save PDF
                     </button>
                 </div>
@@ -314,13 +315,12 @@
 
     <script>
         // --- DATA STATE ---
+        // Initialize with ONE generic exercise
         const state = {
             studentName: '',
             date: new Date().toISOString().split('T')[0],
             exercises: [
-                { id: 1, name: 'Bench Press', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] },
-                { id: 2, name: 'Squat', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] },
-                { id: 3, name: 'Deadlift', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] }
+                { id: 1, name: '', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] }
             ],
             appliance: { name: '', watts: '' },
             meal: { name: '', calories: '' },
@@ -346,6 +346,7 @@
 
         function getAverageWork(exIndex) {
             let total = 0, count = 0;
+            if(!state.exercises[exIndex]) return 0;
             state.exercises[exIndex].trials.forEach(t => {
                 const res = calculateRow(t.w, t.d, t.t);
                 if (res) { total += res.work; count++; }
@@ -360,29 +361,37 @@
             container.innerHTML = '';
 
             state.exercises.forEach((ex, exIdx) => {
+                // Calculate average for display
+                const avg = getAverageWork(exIdx);
+
                 let html = `
                 <div class="bg-white rounded-lg shadow-sm border border-slate-200 mb-6 overflow-hidden">
-                    <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">Ex #${exIdx+1}</span>
-                            <input type="text" value="${ex.name}" onchange="updateExName(${exIdx}, this.value)" class="font-bold text-lg bg-transparent border-b border-dashed border-slate-300 focus:outline-none w-48">
+                    <div class="bg-slate-50 p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <div class="flex items-center gap-2 w-full">
+                            <span class="bg-rose-600 text-white text-xs font-bold px-2 py-1 rounded">Ex #${exIdx+1}</span>
+                            <input type="text" value="${ex.name}" placeholder="Enter Exercise Name (e.g. Squat)" oninput="updateExName(${exIdx}, this.value)" class="font-bold text-lg bg-transparent border-b border-dashed border-slate-300 focus:outline-none w-full sm:w-64 placeholder-slate-400">
+                            
+                            <button onclick="removeExercise(${exIdx})" class="ml-auto text-slate-400 hover:text-red-500" title="Delete Exercise">
+                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            </button>
                         </div>
-                        <div class="text-xs font-medium text-slate-500">
-                            Avg Work: <span id="avg-work-${exIdx}" class="text-blue-600 font-bold">0 J</span>
+                        <div class="text-xs font-medium text-slate-500 w-full sm:w-auto text-right">
+                            Avg Work: <span id="avg-work-${exIdx}" class="text-rose-600 font-bold">${avg > 0 ? avg.toFixed(1) + ' J' : '0 J'}</span>
                         </div>
                     </div>
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
-                            <tr>
-                                <th class="p-2 w-16">Trial</th>
-                                <th class="p-2">Weight (lbs)</th>
-                                <th class="p-2">Dist (m)</th>
-                                <th class="p-2">Time (s)</th>
-                                <th class="p-2 text-blue-600">Work (J)</th>
-                                <th class="p-2 text-green-600">Power (W)</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                                <tr>
+                                    <th class="p-2 w-12">Trial</th>
+                                    <th class="p-2 min-w-[80px]">Weight (lbs)</th>
+                                    <th class="p-2 min-w-[80px]">Dist (m)</th>
+                                    <th class="p-2 min-w-[80px]">Time (s)</th>
+                                    <th class="p-2 text-rose-600">Work (J)</th>
+                                    <th class="p-2 text-green-600">Power (W)</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
                 
                 ex.trials.forEach((trial, tIdx) => {
                     const res = calculateRow(trial.w, trial.d, trial.t);
@@ -392,21 +401,53 @@
                         <td class="p-2"><input type="number" class="w-full border p-1 rounded" value="${trial.w}" oninput="updateTrial(${exIdx}, ${tIdx}, 'w', this.value)"></td>
                         <td class="p-2"><input type="number" step="0.01" class="w-full border p-1 rounded" value="${trial.d}" oninput="updateTrial(${exIdx}, ${tIdx}, 'd', this.value)"></td>
                         <td class="p-2"><input type="number" step="0.1" class="w-full border p-1 rounded" value="${trial.t}" oninput="updateTrial(${exIdx}, ${tIdx}, 't', this.value)"></td>
-                        <td class="p-2 font-mono text-blue-600 bg-blue-50/30">${res ? res.work.toFixed(1) : '-'}</td>
-                        <td class="p-2 font-mono text-green-600 bg-green-50/30">${res ? res.power.toFixed(1) : '-'}</td>
+                        <td class="p-2 font-mono text-rose-600 bg-rose-50/30" id="res-work-${exIdx}-${tIdx}">${res ? res.work.toFixed(1) : '-'}</td>
+                        <td class="p-2 font-mono text-green-600 bg-green-50/30" id="res-power-${exIdx}-${tIdx}">${res ? res.power.toFixed(1) : '-'}</td>
                     </tr>`;
                 });
 
-                html += `</tbody></table></div>`;
+                html += `</tbody></table></div></div>`;
                 container.innerHTML += html;
             });
-            updateAveragesUI();
+            
+            // Re-initialize icons for new elements
+            lucide.createIcons();
+        }
+
+        function addExercise() {
+            state.exercises.push({ id: Date.now(), name: '', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] });
+            renderDataLog();
+            updateAnalysis();
+            updateReport();
+        }
+
+        function removeExercise(index) {
+            if(confirm("Delete this exercise?")) {
+                state.exercises.splice(index, 1);
+                renderDataLog();
+                updateAnalysis();
+                updateReport();
+            }
         }
 
         function updateTrial(exIdx, tIdx, field, val) {
+            // Update State
             state.exercises[exIdx].trials[tIdx][field] = val;
-            // Re-render only averages for performance, or just update row text if implemented finely
-            renderDataLog(); // Simple re-render for now to update calculated columns
+            
+            // Update UI (Direct DOM manipulation to prevent focus loss)
+            const trial = state.exercises[exIdx].trials[tIdx];
+            const res = calculateRow(trial.w, trial.d, trial.t);
+            
+            // Update Result Cells
+            document.getElementById(`res-work-${exIdx}-${tIdx}`).innerText = res ? res.work.toFixed(1) : '-';
+            document.getElementById(`res-power-${exIdx}-${tIdx}`).innerText = res ? res.power.toFixed(1) : '-';
+            
+            // Update Average Header
+            const avg = getAverageWork(exIdx);
+            const avgEl = document.getElementById(`avg-work-${exIdx}`);
+            if(avgEl) avgEl.innerText = avg > 0 ? avg.toFixed(1) + ' J' : '0 J';
+
+            // Trigger Dependent Updates
             updateAnalysis();
             updateReport();
         }
@@ -417,14 +458,6 @@
             updateReport();
         }
 
-        function updateAveragesUI() {
-            state.exercises.forEach((ex, i) => {
-                const avg = getAverageWork(i);
-                const el = document.getElementById(`avg-work-${i}`);
-                if(el) el.innerText = avg > 0 ? avg.toFixed(1) + ' J' : '0 J';
-            });
-        }
-
         function updateAnalysis() {
             // Appliance
             const watts = parseFloat(state.appliance.watts) || 0;
@@ -433,9 +466,10 @@
             
             let machineHtml = '';
             state.exercises.forEach((ex, i) => {
+                const name = ex.name || `Exercise #${i+1}`;
                 const avg = getAverageWork(i);
                 const reps = avg > 0 ? Math.ceil(energyReq / avg) : '-';
-                machineHtml += `<div class="p-2 bg-slate-50 rounded border text-center"><div class="text-xs text-slate-500 truncate">${ex.name}</div><div class="font-bold text-lg">${reps}</div></div>`;
+                machineHtml += `<div class="p-2 bg-slate-50 rounded border text-center"><div class="text-xs text-slate-500 truncate" title="${name}">${name}</div><div class="font-bold text-lg">${reps}</div></div>`;
             });
             document.getElementById('machine-results').innerHTML = machineHtml;
 
@@ -446,9 +480,10 @@
 
             let foodHtml = '';
             state.exercises.forEach((ex, i) => {
+                const name = ex.name || `Exercise #${i+1}`;
                 const avg = getAverageWork(i);
                 const reps = avg > 0 ? Math.ceil(foodEnergy / avg) : '-';
-                foodHtml += `<div class="p-2 bg-slate-50 rounded border text-center"><div class="text-xs text-slate-500 truncate">${ex.name}</div><div class="font-bold text-lg">${reps}</div></div>`;
+                foodHtml += `<div class="p-2 bg-slate-50 rounded border text-center"><div class="text-xs text-slate-500 truncate" title="${name}">${name}</div><div class="font-bold text-lg">${reps}</div></div>`;
             });
             document.getElementById('food-results').innerHTML = foodHtml;
         }
@@ -461,10 +496,11 @@
             // Exercises
             let exHtml = '';
             state.exercises.forEach((ex, i) => {
+                const name = ex.name || `Exercise #${i+1}`;
                 const avg = getAverageWork(i);
                 exHtml += `
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-2">${ex.name} (Avg Work: ${avg.toFixed(1)} J)</h4>
+                <div class="mb-6 avoid-break">
+                    <h4 class="font-bold text-lg mb-2">${name} (Avg Work: ${avg.toFixed(1)} J)</h4>
                     <table class="w-full border-collapse border border-slate-400 text-sm text-center">
                         <tr class="bg-slate-100">
                             <th class="border p-1">Trial</th><th class="border p-1">Wt(lbs)</th><th class="border p-1">Dist(m)</th><th class="border p-1">Time(s)</th><th class="border p-1">Work(J)</th><th class="border p-1">Power(W)</th>
@@ -494,9 +530,10 @@
 
             let appRows = '';
             state.exercises.forEach((ex, i) => {
+                const name = ex.name || `Exercise #${i+1}`;
                 const avg = getAverageWork(i);
                 const reps = avg > 0 ? Math.ceil(energyReq / avg) : '-';
-                appRows += `<tr><td class="border p-1">${ex.name}</td><td class="border p-1">${reps}</td></tr>`;
+                appRows += `<tr><td class="border p-1">${name}</td><td class="border p-1">${reps}</td></tr>`;
             });
             document.getElementById('rep-app-table').innerHTML = appRows;
 
@@ -508,9 +545,10 @@
 
             let mealRows = '';
             state.exercises.forEach((ex, i) => {
+                const name = ex.name || `Exercise #${i+1}`;
                 const avg = getAverageWork(i);
                 const reps = avg > 0 ? Math.ceil(foodEnergy / avg) : '-';
-                mealRows += `<tr><td class="border p-1">${ex.name}</td><td class="border p-1">${reps}</td></tr>`;
+                mealRows += `<tr><td class="border p-1">${name}</td><td class="border p-1">${reps}</td></tr>`;
             });
             document.getElementById('rep-meal-table').innerHTML = mealRows;
 
@@ -519,7 +557,6 @@
 
         // --- INIT & EVENTS ---
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
             renderDataLog();
 
             // Navigation
@@ -533,7 +570,7 @@
                     link.classList.add('active');
                     pages.forEach(page => page.classList.add('hidden'));
                     document.getElementById(targetId).classList.remove('hidden');
-                    if(targetId === 'page-report') updateReport(); // Ensure latest data
+                    if(targetId === 'page-report') updateReport();
                 });
             });
 
@@ -551,11 +588,10 @@
 
             document.getElementById('btn-clear-data').addEventListener('click', () => {
                 if(confirm("Clear all measurements?")) {
-                    state.exercises.forEach(ex => ex.trials = [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}]);
+                    state.exercises = [{ id: Date.now(), name: '', trials: [{w:'', d:'', t:''}, {w:'', d:'', t:''}, {w:'', d:'', t:''}] }];
                     state.appliance = { name: '', watts: '' };
                     state.meal = { name: '', calories: '' };
                     renderDataLog();
-                    // Clear inputs manually since they aren't fully React-bound
                     document.getElementById('appliance-name').value = '';
                     document.getElementById('appliance-watts').value = '';
                     document.getElementById('meal-name').value = '';
