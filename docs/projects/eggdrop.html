@@ -144,6 +144,36 @@
             .nav-link { text-align: center; }
             .form-row { flex-direction: column; }
         }
+        /* --- LAB REPORT PRINTING --- */
+@media print {
+    nav, header, .tabs-container {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .page-content {
+        display: block !important;
+    }
+
+    input, textarea {
+        border: none !important;
+        border-bottom: 1px solid #333 !important;
+        background: transparent !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -166,6 +196,7 @@
             <div id="nav-phase2" class="nav-link" onclick="switchTab('page-phase2', this)">Drop #2: Container</div>
             <div id="nav-physics" class="nav-link" onclick="switchTab('page-physics', this)">Calculations</div>
             <div id="nav-rubric" class="nav-link" onclick="switchTab('page-rubric', this)">Grading Rubric</div>
+            <div id="nav-report" class="nav-link" onclick="switchTab('page-report', this)">📝 Lab Report</div>
         </div>
         
         <main>
@@ -275,6 +306,113 @@
                     </div>
                 </div>
             </div>
+
+            <div id="page-report" class="page-content">
+
+    <div class="card">
+        <div class="no-print" style="text-align:right;">
+            <button class="action-btn" onclick="window.print()">Print / Save as PDF</button>
+        </div>
+
+        <h2>🥚 Egg Drop Lab Report</h2>
+        <p><strong>Instructions:</strong> Complete this report digitally. When finished, choose
+        <em>Print → Save as PDF</em> and submit the PDF to Google Classroom.</p>
+    </div>
+
+    <!-- STUDENT INFO -->
+    <div class="card">
+        <h3>Student Information</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Class Period</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text">
+            </div>
+        </div>
+    </div>
+
+    <!-- DROP 1 -->
+    <div class="card">
+        <h3>Drop #1 — Paper & Tape Device</h3>
+
+        <table>
+            <tr><th colspan="6">Hang Time (s)</th></tr>
+            <tr>
+                <th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>Avg</th>
+            </tr>
+            <tr>
+                <td><input></td><td><input></td><td><input></td>
+                <td><input></td><td><input></td><td><input></td>
+            </tr>
+        </table>
+
+        <table>
+            <tr><th>Quantity</th><th>Value</th><th>Units</th></tr>
+            <tr><td>Mass</td><td><input></td><td>g</td></tr>
+            <tr><td>Drop Height</td><td><input></td><td>m</td></tr>
+        </table>
+
+        <h4>Calculations</h4>
+        <label>Potential Energy (PE = mgh)</label>
+        <textarea></textarea>
+
+        <label>Speed Before Impact (v = √2gh)</label>
+        <textarea></textarea>
+
+        <label>Momentum (p = mv)</label>
+        <textarea></textarea>
+
+        <label>Impulse (Δp)</label>
+        <textarea></textarea>
+    </div>
+
+    <!-- DROP 2 -->
+    <div class="card">
+        <h3>Drop #2 — Homemade Container</h3>
+
+        <table>
+            <tr><th colspan="6">Hang Time (s)</th></tr>
+            <tr>
+                <th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>Avg</th>
+            </tr>
+            <tr>
+                <td><input></td><td><input></td><td><input></td>
+                <td><input></td><td><input></td><td><input></td>
+            </tr>
+        </table>
+
+        <table>
+            <tr><th>Quantity</th><th>Value</th><th>Units</th></tr>
+            <tr><td>Mass</td><td><input></td><td>g</td></tr>
+            <tr><td>Drop Height</td><td><input></td><td>m</td></tr>
+        </table>
+
+        <h4>Calculations</h4>
+        <textarea></textarea>
+    </div>
+
+    <!-- CER -->
+    <div class="card">
+        <h3>Claim–Evidence–Reasoning (CER)</h3>
+
+        <label><strong>Claim</strong></label>
+        <textarea></textarea>
+
+        <label><strong>Evidence</strong> (use numbers + units)</label>
+        <textarea></textarea>
+
+        <label><strong>Reasoning</strong> (Use FΔt = Δp)</label>
+        <textarea></textarea>
+    </div>
+
+</div>
 
             <div id="page-rubric" class="page-content">
                 <div class="card">
