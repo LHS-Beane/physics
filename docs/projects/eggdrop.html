@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Egg Drop Challenge | Physics Hub</title>
+
+    <!-- Your existing libs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind + MathJax ONLY used by the Lab Report tab -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         /* --- GLOBAL VARIABLES (Matching your site theme) --- */
         :root {
@@ -48,8 +57,8 @@
 
         /* --- HERO HEADER --- */
         header {
-            /* Changed image to something relevant to gravity/falling */
-            background: linear-gradient(rgba(0, 77, 128, 0.9), rgba(0, 77, 128, 0.9)), url('https://images.unsplash.com/photo-1452800185063-6db5e12b8e2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background: linear-gradient(rgba(0, 77, 128, 0.9), rgba(0, 77, 128, 0.9)),
+                        url('https://images.unsplash.com/photo-1452800185063-6db5e12b8e2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
             background-position: center;
             color: var(--white);
@@ -91,8 +100,8 @@
 
         /* --- CONTENT SECTIONS --- */
         .page-content { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .page-content.active { display: block; } 
-        
+        .page-content.active { display: block; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         h2 { color: var(--secondary); border-bottom: 3px solid var(--accent); display: inline-block; margin: 30px 0 15px 0; padding-bottom: 5px; }
@@ -131,11 +140,11 @@
         th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         th { background-color: var(--secondary); color: white; }
         tr:nth-child(even) { background-color: #f9f9f9; }
-        
+
         /* Utility for math font */
         .eq { font-family: 'Times New Roman', serif; font-style: italic; }
-        .eq-block { 
-            background: #f9f9f9; padding: 10px; border: 1px solid #ddd; display: block; 
+        .eq-block {
+            background: #f9f9f9; padding: 10px; border: 1px solid #ddd; display: block;
             font-family: 'Times New Roman', serif; font-style: italic; margin: 10px 0; text-align: center; font-size: 1.2rem;
         }
 
@@ -144,36 +153,48 @@
             .nav-link { text-align: center; }
             .form-row { flex-direction: column; }
         }
-        /* --- LAB REPORT PRINTING --- */
-@media print {
-    nav, header, .tabs-container {
-        display: none !important;
-    }
 
-    body {
-        background: white;
-    }
+        /* =========================
+           LAB REPORT (Tailwind) Helpers
+           ========================= */
+        /* Keep Tailwind-only styles scoped inside the Lab Report tab */
+        #page-report .fill-in {
+            border-bottom: 2px solid #e2e8f0;
+            background: transparent;
+            padding: 2px 4px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s;
+            color: #1e293b;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        #page-report .fill-in:focus { border-bottom-color: #4f46e5; }
+        #page-report .tbl-input { width: 100%; text-align: center; background: transparent; height: 100%; }
 
-    .page-content {
-        display: block !important;
-    }
+        /* =========================
+           PRINT: print ONLY the Lab Report tab
+           ========================= */
+        @media print {
+            nav, header, .tabs-container { display: none !important; }
+            body { background: white !important; -webkit-print-color-adjust: exact; }
 
-    input, textarea {
-        border: none !important;
-        border-bottom: 1px solid #333 !important;
-        background: transparent !important;
-    }
+            /* Hide everything by default... */
+            .page-content { display: none !important; }
 
-    .card {
-        box-shadow: none !important;
-        border: none !important;
-    }
+            /* ...then print only the report tab */
+            #page-report { display: block !important; }
 
-    .no-print {
-        display: none !important;
-    }
-}
-
+            /* Worksheet print tweaks */
+            #page-report .no-print { display: none !important; }
+            #page-report .shadow-lg { box-shadow: none !important; }
+            #page-report .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            #page-report .page-break { page-break-before: always; }
+            #page-report input, #page-report textarea {
+                border: none !important;
+                border-bottom: 1px solid #ccc !important;
+                resize: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -196,11 +217,16 @@
             <div id="nav-phase2" class="nav-link" onclick="switchTab('page-phase2', this)">Drop #2: Container</div>
             <div id="nav-physics" class="nav-link" onclick="switchTab('page-physics', this)">Calculations</div>
             <div id="nav-rubric" class="nav-link" onclick="switchTab('page-rubric', this)">Grading Rubric</div>
-            <div id="nav-report" class="nav-link" onclick="switchTab('page-report', this)">📝 Lab Report</div>
+            <div id="nav-report" class="nav-link" onclick="switchTab('page-report', this)">Lab Report (PDF)</div>
         </div>
-        
+
         <main>
-            
+
+            <!-- =========================
+                 YOUR ORIGINAL PAGE CONTENT
+                 (UNCHANGED)
+                 ========================= -->
+
             <div id="page-overview" class="page-content active">
                 <div class="card">
                     <h2>🥚 Project Overview</h2>
@@ -208,7 +234,7 @@
                     <br>
                     <p>Instead of a formal lab report, you will complete a <strong>Google Form Reflection</strong> after your drops. You will need to perform calculations regarding the impact velocity and energy of your device.</p>
                 </div>
-                
+
                 <div class="card warning">
                     <h3>Submission Requirements</h3>
                     <ul>
@@ -223,7 +249,7 @@
                 <div class="card" style="border-left-color: var(--accent);">
                     <h2>Drop #1: The Paper Device</h2>
                     <p><strong>Goal:</strong> Create a lightweight landing device using minimal materials.</p>
-                    
+
                     <h3>Rules & Restrictions</h3>
                     <ul>
                         <li><strong>Materials:</strong> Paper and Tape ONLY. No glue, staples, or clips.</li>
@@ -255,7 +281,7 @@
                 <div class="card success">
                     <h2>Drop #2: The Homemade Container</h2>
                     <p><strong>Goal:</strong> Engineer a robust container to protect the egg from a high fall.</p>
-                    
+
                     <h3>Rules & Restrictions</h3>
                     <ul>
                         <li><strong>Mass Limit:</strong> Maximum 200 grams (measured without the egg).</li>
@@ -280,12 +306,12 @@
                 </div>
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    
+
                     <div class="card" style="border-left-color: #8e44ad;">
                         <h3>1. Velocity & Energy</h3>
                         <p><strong>Velocity without Device (Freefall):</strong></p>
                         <code class="eq-block">v = &radic;(2gh)</code>
-                        
+
                         <p><strong>Actual Velocity at Impact:</strong></p>
                         <p style="font-size: 0.9rem; font-style: italic;">(Calculate using your drop time <span class="eq">t</span>)</p>
                         <code class="eq-block">v<sub>f</sub> = g &times; t</code>
@@ -307,118 +333,11 @@
                 </div>
             </div>
 
-            <div id="page-report" class="page-content">
-
-    <div class="card">
-        <div class="no-print" style="text-align:right;">
-            <button class="action-btn" onclick="window.print()">Print / Save as PDF</button>
-        </div>
-
-        <h2>🥚 Egg Drop Lab Report</h2>
-        <p><strong>Instructions:</strong> Complete this report digitally. When finished, choose
-        <em>Print → Save as PDF</em> and submit the PDF to Google Classroom.</p>
-    </div>
-
-    <!-- STUDENT INFO -->
-    <div class="card">
-        <h3>Student Information</h3>
-        <div class="form-row">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text">
-            </div>
-            <div class="form-group">
-                <label>Class Period</label>
-                <input type="text">
-            </div>
-            <div class="form-group">
-                <label>Date</label>
-                <input type="text">
-            </div>
-        </div>
-    </div>
-
-    <!-- DROP 1 -->
-    <div class="card">
-        <h3>Drop #1 — Paper & Tape Device</h3>
-
-        <table>
-            <tr><th colspan="6">Hang Time (s)</th></tr>
-            <tr>
-                <th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>Avg</th>
-            </tr>
-            <tr>
-                <td><input></td><td><input></td><td><input></td>
-                <td><input></td><td><input></td><td><input></td>
-            </tr>
-        </table>
-
-        <table>
-            <tr><th>Quantity</th><th>Value</th><th>Units</th></tr>
-            <tr><td>Mass</td><td><input></td><td>g</td></tr>
-            <tr><td>Drop Height</td><td><input></td><td>m</td></tr>
-        </table>
-
-        <h4>Calculations</h4>
-        <label>Potential Energy (PE = mgh)</label>
-        <textarea></textarea>
-
-        <label>Speed Before Impact (v = √2gh)</label>
-        <textarea></textarea>
-
-        <label>Momentum (p = mv)</label>
-        <textarea></textarea>
-
-        <label>Impulse (Δp)</label>
-        <textarea></textarea>
-    </div>
-
-    <!-- DROP 2 -->
-    <div class="card">
-        <h3>Drop #2 — Homemade Container</h3>
-
-        <table>
-            <tr><th colspan="6">Hang Time (s)</th></tr>
-            <tr>
-                <th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>Avg</th>
-            </tr>
-            <tr>
-                <td><input></td><td><input></td><td><input></td>
-                <td><input></td><td><input></td><td><input></td>
-            </tr>
-        </table>
-
-        <table>
-            <tr><th>Quantity</th><th>Value</th><th>Units</th></tr>
-            <tr><td>Mass</td><td><input></td><td>g</td></tr>
-            <tr><td>Drop Height</td><td><input></td><td>m</td></tr>
-        </table>
-
-        <h4>Calculations</h4>
-        <textarea></textarea>
-    </div>
-
-    <!-- CER -->
-    <div class="card">
-        <h3>Claim–Evidence–Reasoning (CER)</h3>
-
-        <label><strong>Claim</strong></label>
-        <textarea></textarea>
-
-        <label><strong>Evidence</strong> (use numbers + units)</label>
-        <textarea></textarea>
-
-        <label><strong>Reasoning</strong> (Use FΔt = Δp)</label>
-        <textarea></textarea>
-    </div>
-
-</div>
-
             <div id="page-rubric" class="page-content">
                 <div class="card">
                     <h2>Grading Rubric (120 Points Total)</h2>
                     <p>Each drop is worth 60 points. 50% is based on performance (Survival) and 50% on your Reflection/Math.</p>
-                    
+
                     <table>
                         <thead>
                             <tr>
@@ -476,6 +395,462 @@
                 </div>
             </div>
 
+            <!-- =========================
+                 NEW TAB: LAB REPORT (YOUR NICE VERSION)
+                 ========================= -->
+            <div id="page-report" class="page-content">
+
+                <!-- Action Bar (Hidden when printing) -->
+                <div class="no-print max-w-4xl mx-auto mb-6 flex justify-between items-center bg-white p-4 rounded-lg shadow">
+                    <div>
+                        <h2 class="font-bold text-indigo-700">Student Worksheet</h2>
+                        <p class="text-xs text-gray-500">Fill in digitally and "Print to PDF", or print blank.</p>
+                    </div>
+                    <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                        Print / Save as PDF
+                    </button>
+                </div>
+
+                <!-- DOCUMENT CONTAINER -->
+                <div class="container max-w-4xl mx-auto bg-white p-8 md:p-12 shadow-lg min-h-screen">
+
+                    <!-- HEADER -->
+                    <header class="border-b-4 border-indigo-600 pb-4 mb-8">
+                        <h1 class="text-3xl font-extrabold text-slate-900 mb-2">🥚 Egg Drop Investigation</h1>
+                        <h2 class="text-xl text-slate-600 mb-6">Momentum, Impulse, and Force</h2>
+
+                        <div class="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+                            <div>
+                                <label class="font-bold text-slate-500">Name:</label>
+                                <input type="text" class="fill-in">
+                            </div>
+                            <div>
+                                <label class="font-bold text-slate-500">Date:</label>
+                                <input type="text" class="fill-in">
+                            </div>
+                            <div>
+                                <label class="font-bold text-slate-500">Course:</label>
+                                <input type="text" value="Introductory Physics" class="fill-in">
+                            </div>
+                            <div>
+                                <label class="font-bold text-slate-500">Class Period:</label>
+                                <input type="text" class="fill-in">
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- PURPOSE -->
+                    <section class="mb-8">
+                        <h3 class="font-bold text-lg text-indigo-700 uppercase tracking-wide mb-2">Purpose</h3>
+                        <p class="text-justify leading-relaxed">
+                            In this investigation, you will analyze how design choices affect the force experienced by an egg during impact. You will apply concepts of energy, momentum, impulse, and average force to explain your results quantitatively.
+                        </p>
+                    </section>
+
+                    <!-- DROP 1 SECTION -->
+                    <section class="mb-10 border border-slate-300 rounded-lg overflow-hidden">
+                        <div class="bg-slate-100 p-4 border-b border-slate-300">
+                            <h3 class="font-bold text-xl text-slate-800">DROP 1 — Paper & Tape Device (60 pts)</h3>
+                            <div class="text-sm text-slate-600 mt-1">
+                                <strong>Design Constraints:</strong> Paper and tape only • Maximum mass: 15 g
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-6">
+                            <!-- Measurements -->
+                            <div>
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 mb-3 pb-1">A. Experimental Measurements</h4>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+                                    <div>
+                                        <p class="font-semibold mb-2">1. Fixed Quantities</p>
+                                        <table class="w-full text-sm border-collapse border border-slate-300">
+                                            <tr class="bg-slate-50">
+                                                <th class="border border-slate-300 p-2 text-left">Quantity</th>
+                                                <th class="border border-slate-300 p-2 text-center w-24">Value</th>
+                                                <th class="border border-slate-300 p-2 text-center w-16">Units</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-slate-300 p-2">Mass of device</td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-2 text-center">g</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-slate-300 p-2">Drop height</td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-2 text-center">m</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-semibold mb-2">2. Hang Time Measurements</p>
+                                        <table class="w-full text-sm border-collapse border border-slate-300 text-center">
+                                            <tr class="bg-slate-50">
+                                                <th class="border border-slate-300 p-1">Trial 1</th>
+                                                <th class="border border-slate-300 p-1">Trial 2</th>
+                                                <th class="border border-slate-300 p-1">Trial 3</th>
+                                                <th class="border border-slate-300 p-1">Trial 4</th>
+                                                <th class="border border-slate-300 p-1">Trial 5</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                            </tr>
+                                        </table>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="font-bold text-sm">Average hang time:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> <span class="text-sm">s</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-yellow-50 p-3 border border-yellow-200 rounded text-sm">
+                                    <span class="font-bold">Mass Check:</span> Is the mass ≤ 15 g?
+                                    <label class="inline-flex items-center ml-4"><input type="checkbox" class="form-checkbox"> Yes</label>
+                                    <label class="inline-flex items-center ml-4"><input type="checkbox" class="form-checkbox"> No</label>
+                                    <span class="ml-4">If no: grams over limit = <input type="text" class="border-b border-black w-12 text-center bg-transparent"> g</span>
+                                </div>
+                            </div>
+
+                            <!-- Calculations -->
+                            <div>
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 mb-3 pb-1">B. Physics Calculations</h4>
+                                <p class="text-xs text-slate-500 italic mb-4">(Show all work. Convert mass to kilograms. Use \( g = 9.8 \, m/s^2 \).)</p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Gravitational Potential Energy</p>
+                                        <div class="text-center mb-2">\( PE = mgh \)</div>
+                                        <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Show work..."></textarea>
+                                        <div class="mt-2 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> J
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Speed Before Impact</p>
+                                        <div class="text-center mb-2">\( v = \sqrt{2gh} \)</div>
+                                        <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Show work..."></textarea>
+                                        <div class="mt-2 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> m/s
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Momentum Before Impact</p>
+                                        <div class="text-center mb-2">\( p = mv \)</div>
+                                        <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Show work..."></textarea>
+                                        <div class="mt-2 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> kg·m/s
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Impulse (Change in Momentum)</p>
+                                        <div class="text-center mb-2">\( \Delta p = p_f - p_i = 0 - (-p) \)</div>
+                                        <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Show work..."></textarea>
+                                        <div class="mt-2 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> N·s
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Outcome -->
+                            <div>
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 mb-2 pb-1">C. Impact Outcome <span class="text-xs font-normal text-slate-500">(Instructor Verification)</span></h4>
+                                <div class="flex gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Egg intact</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Minor crack</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Major crack / leaking</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Destroyed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- PAGE BREAK FOR PRINTING -->
+                    <div class="page-break"></div>
+
+                    <!-- DROP 2 SECTION -->
+                    <section class="mb-10 border border-slate-300 rounded-lg overflow-hidden mt-8 md:mt-0">
+                        <div class="bg-slate-100 p-4 border-b border-slate-300">
+                            <h3 class="font-bold text-xl text-slate-800">DROP 2 — Homemade Container (60 pts)</h3>
+                            <div class="text-sm text-slate-600 mt-1">
+                                <strong>Design Constraints:</strong> Max mass: 200 g • Banned materials list applies
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-6">
+                            <!-- Measurements -->
+                            <div>
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 mb-3 pb-1">A. Experimental Measurements</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+                                    <div>
+                                        <p class="font-semibold mb-2">1. Fixed Quantities</p>
+                                        <table class="w-full text-sm border-collapse border border-slate-300">
+                                            <tr class="bg-slate-50">
+                                                <th class="border border-slate-300 p-2 text-left">Quantity</th>
+                                                <th class="border border-slate-300 p-2 text-center w-24">Value</th>
+                                                <th class="border border-slate-300 p-2 text-center w-16">Units</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-slate-300 p-2">Mass of device</td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-2 text-center">g</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-slate-300 p-2">Drop height</td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-2 text-center">m</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold mb-2">2. Hang Time Measurements</p>
+                                        <table class="w-full text-sm border-collapse border border-slate-300 text-center">
+                                            <tr class="bg-slate-50">
+                                                <th class="border border-slate-300 p-1">Trial 1</th>
+                                                <th class="border border-slate-300 p-1">Trial 2</th>
+                                                <th class="border border-slate-300 p-1">Trial 3</th>
+                                                <th class="border border-slate-300 p-1">Trial 4</th>
+                                                <th class="border border-slate-300 p-1">Trial 5</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                                <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                            </tr>
+                                        </table>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="font-bold text-sm">Average hang time:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> <span class="text-sm">s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-yellow-50 p-3 border border-yellow-200 rounded text-sm">
+                                    <span class="font-bold">Mass Check:</span> Is the mass ≤ 200 g?
+                                    <label class="inline-flex items-center ml-4"><input type="checkbox" class="form-checkbox"> Yes</label>
+                                    <label class="inline-flex items-center ml-4"><input type="checkbox" class="form-checkbox"> No</label>
+                                    <span class="text-xs ml-2 italic">(If no, this drop is disqualified.)</span>
+                                </div>
+                            </div>
+
+                            <!-- Calculations -->
+                            <div>
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 mb-3 pb-1">B. Physics Calculations</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Gravitational Potential Energy</p>
+                                        <div class="text-center mb-2">\( PE = mgh \)</div>
+                                        <div class="mt-8 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> J
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Speed Before Impact</p>
+                                        <div class="text-center mb-2">\( v = \sqrt{2gh} \)</div>
+                                        <div class="mt-8 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> m/s
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Momentum Before Impact</p>
+                                        <div class="text-center mb-2">\( p = mv \)</div>
+                                        <div class="mt-8 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> kg·m/s
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-4 rounded bg-white">
+                                        <p class="font-bold text-sm mb-2">Impulse (Change in Momentum)</p>
+                                        <div class="text-center mb-2">\( \Delta p = p \)</div>
+                                        <div class="mt-8 flex justify-end items-center gap-2">
+                                            <span class="font-bold text-sm">Answer:</span>
+                                            <input type="text" class="border-b border-black w-24 text-center"> N·s
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Outcome -->
+                            <div>
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 mb-2 pb-1">C. Impact Outcome <span class="text-xs font-normal text-slate-500">(Instructor Verification)</span></h4>
+                                <div class="flex gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Egg intact</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Minor crack</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Major crack / leaking</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Destroyed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- PART 3: QUANTITATIVE ANALYSIS -->
+                    <section class="mb-10">
+                        <h3 class="font-bold text-lg text-indigo-700 uppercase tracking-wide mb-4 border-b border-indigo-200 pb-2">PART 3 — Quantitative Analysis</h3>
+
+                        <div class="space-y-8">
+                            <!-- 1. Comparison -->
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-2">1. Comparison of Designs</h4>
+                                <table class="w-full text-sm border-collapse border border-slate-300">
+                                    <tr class="bg-indigo-50">
+                                        <th class="border border-slate-300 p-2 text-left w-1/3">Quantity</th>
+                                        <th class="border border-slate-300 p-2 text-center w-1/3">Paper Device</th>
+                                        <th class="border border-slate-300 p-2 text-center w-1/3">Homemade Device</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 p-2 font-medium">Mass (kg)</td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 p-2 font-medium">Momentum at impact (kg·m/s)</td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 p-2 font-medium">Average hang time (s)</td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 p-2 font-medium">Egg damage (qualitative)</td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                        <td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- 2. Impulse -->
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-2">2. Impulse–Force Relationship</h4>
+                                <p class="text-sm text-slate-600 mb-2">The impulse–momentum theorem states: \( F_{\text{avg}} \Delta t = \Delta p \)</p>
+                                <div class="space-y-4">
+                                    <div class="bg-white border p-4 rounded">
+                                        <p class="text-sm font-semibold mb-2">A. Which device experienced the larger change in momentum?</p>
+                                        <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Support with calculated values..."></textarea>
+                                    </div>
+                                    <div class="bg-white border p-4 rounded">
+                                        <p class="text-sm font-semibold mb-2">B. Which device resulted in a smaller average force on the egg?</p>
+                                        <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Your explanation must reference impact time..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. Air Resistance -->
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-2">3. Role of Air Resistance</h4>
+                                <div class="mb-3 text-sm">
+                                    <span class="font-semibold">A. Which device had the greater average hang time?</span>
+                                    <input type="text" class="border-b border-black w-48 ml-2">
+                                </div>
+                                <div class="mb-3 text-sm">
+                                    <p class="font-semibold mb-1">B. Identify the design features that increased air resistance:</p>
+                                    <div class="flex gap-4 mb-2">
+                                        <label><input type="checkbox"> Increased surface area</label>
+                                        <label><input type="checkbox"> Parachute or flaps</label>
+                                        <label><input type="checkbox"> Lower mass</label>
+                                        <label><input type="checkbox"> Shape that increased drag</label>
+                                    </div>
+                                    <textarea class="w-full h-16 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Explain your reasoning..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- 4. Engineering -->
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-2">4. Engineering Redesign</h4>
+                                <p class="text-sm mb-2">Choose one device to improve. Primary limitation:</p>
+                                <div class="flex gap-4 text-sm mb-2">
+                                    <label><input type="checkbox"> Excessive force</label>
+                                    <label><input type="checkbox"> Insufficient impact time</label>
+                                    <label><input type="checkbox"> Excess mass</label>
+                                    <label><input type="checkbox"> Poor stability</label>
+                                </div>
+                                <div class="border border-dashed border-gray-400 p-4 h-32 bg-gray-50 text-center flex items-center justify-center text-gray-400">
+                                    (Sketch/Describe One Modification Here)
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CER SECTION -->
+                    <section class="mb-10 page-break">
+                        <h3 class="font-bold text-lg text-white bg-indigo-700 p-2 rounded-t mb-0">Claim–Evidence–Reasoning (CER): Egg Drop Physics</h3>
+                        <div class="border border-indigo-700 border-t-0 p-6 rounded-b">
+                            <p class="font-semibold text-slate-800 mb-4">Prompt: Which design (Paper & Tape or Homemade Container) was more effective at reducing the force on the egg during impact?</p>
+
+                            <!-- CLAIM -->
+                            <div class="mb-6">
+                                <h4 class="font-bold text-indigo-700 border-b border-indigo-200 mb-2">C — Claim</h4>
+                                <p class="text-sm text-slate-500 mb-2">Make a clear, one-sentence claim answering the question above.</p>
+                                <div class="bg-gray-100 p-4 rounded italic">
+                                    The <input type="text" class="border-b border-black bg-transparent w-48 text-center font-bold"> device was more effective at reducing the force on the egg during impact.
+                                </div>
+                            </div>
+
+                            <!-- EVIDENCE -->
+                            <div class="mb-6">
+                                <h4 class="font-bold text-indigo-700 border-b border-indigo-200 mb-2">E — Evidence</h4>
+                                <p class="text-sm text-slate-500 mb-2">Use quantitative data. Include at least three: Mass, Momentum, Change in Momentum, Hang Time, or Damage.</p>
+
+                                <table class="w-full text-sm border-collapse border border-slate-300 mb-4">
+                                    <tr class="bg-indigo-50">
+                                        <th class="border border-slate-300 p-1">Quantity</th>
+                                        <th class="border border-slate-300 p-1">Paper Device</th>
+                                        <th class="border border-slate-300 p-1">Homemade Device</th>
+                                    </tr>
+                                    <tr><td class="border border-slate-300 p-1">Mass (kg)</td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td></tr>
+                                    <tr><td class="border border-slate-300 p-1">Momentum (kg·m/s)</td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td></tr>
+                                    <tr><td class="border border-slate-300 p-1">Change in momentum</td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td></tr>
+                                    <tr><td class="border border-slate-300 p-1">Avg. hang time</td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td></tr>
+                                    <tr><td class="border border-slate-300 p-1">Egg damage</td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td><td class="border border-slate-300 p-0"><input type="text" class="tbl-input"></td></tr>
+                                </table>
+
+                                <p class="font-semibold text-sm mb-1">Evidence Statement (numbers required):</p>
+                                <textarea class="w-full h-24 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Ex: The homemade device had a momentum of..."></textarea>
+                            </div>
+
+                            <!-- REASONING -->
+                            <div class="mb-6">
+                                <h4 class="font-bold text-indigo-700 border-b border-indigo-200 mb-2">R — Reasoning</h4>
+                                <p class="text-sm text-slate-500 mb-2">Connect evidence to claim using physics principles. Use \( F_{\text{avg}} \Delta t = \Delta p \).</p>
+                                <textarea class="w-full h-32 bg-gray-50 border border-gray-200 p-2 text-sm" placeholder="Ex: According to the impulse-momentum theorem, for a given change in momentum..."></textarea>
+                            </div>
+
+                            <!-- CHECKLIST -->
+                            <div class="bg-green-50 p-4 rounded border border-green-200 text-sm">
+                                <p class="font-bold text-green-800 mb-2">CER Quality Checklist</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center gap-2"><input type="checkbox"> My claim clearly answers the question</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox"> My evidence includes numbers with correct units</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox"> I compared both devices directly</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox"> I used the impulse equation in my reasoning</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -486,11 +861,16 @@
                 page.classList.remove('active');
             });
             document.getElementById(targetId).classList.add('active');
-            
+
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
             element.classList.add('active');
+
+            // If switching to report, ask MathJax to typeset (helps if it loads after)
+            if (targetId === 'page-report' && window.MathJax && window.MathJax.typeset) {
+                window.MathJax.typeset();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -514,15 +894,10 @@
                         massResult.textContent = `✅ Safe! No penalty. (Under ${limit}g)`;
                         massResult.style.color = "var(--success)";
                     } else {
-                        // Calculate penalty: Round up to nearest whole number if you want strict integers, 
-                        // or just simple subtraction based on prompt "1 pt for each gram over".
-                        // Assuming 15.1 = -1 point (as per "15.1-16 is a minus 1" logic in prompt)
-                        
                         let penalty = 0;
-                        if(mass > 15) {
+                        if (mass > 15) {
                             penalty = Math.ceil(mass - 15);
                         }
-                        
                         massResult.textContent = `⚠️ Penalty: -${penalty} points`;
                         massResult.style.color = "var(--danger)";
                     }
@@ -532,3 +907,4 @@
     </script>
 </body>
 </html>
+
