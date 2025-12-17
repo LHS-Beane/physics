@@ -397,6 +397,10 @@
                     </table>
                 </div>
             </div>
+    <body class="bg-gray-100 text-slate-800 p-4 md:p-8">
+
+        <div id="lab-report">
+    <!-- EVERYTHING you already have stays exactly the same -->
 
             <!-- =========================
                  NEW TAB: LAB REPORT (YOUR NICE VERSION)
@@ -910,34 +914,47 @@
             }
         });
     </script>
-    <script>
+<script>
 /* =========================
-   LOCAL AUTOSAVE FOR STUDENTS
+   BULLETPROOF LOCAL AUTOSAVE
    ========================= */
 
-const STORAGE_KEY = "eggdrop_lab_report_autosave";
+const STORAGE_KEY = "eggdrop_lab_autosave_v2";
 
-// Save data
-function saveFormData() {
-    const data = {};
-    document.querySelectorAll('#page-report input, #page-report textarea').forEach(el => {
-        if (el.type === 'checkbox') {
-            data[el.name || el.id || el.dataset.key || el.outerHTML] = el.checked;
-        } else {
-            data[el.name || el.id || el.dataset.key || el.outerHTML] = el.value;
+// Assign stable keys automatically
+function assignKeys() {
+    let counter = 0;
+    document.querySelectorAll('#lab-report input, #lab-report textarea').forEach(el => {
+        if (!el.dataset.saveKey) {
+            el.dataset.saveKey = `field_${counter++}`;
         }
     });
+}
+
+// Save all data
+function saveData() {
+    const data = {};
+    document.querySelectorAll('#lab-report input, #lab-report textarea').forEach(el => {
+        const key = el.dataset.saveKey;
+
+        if (el.type === 'checkbox') {
+            data[key] = el.checked;
+        } else {
+            data[key] = el.value;
+        }
+    });
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-// Load data
-function loadFormData() {
+// Load saved data
+function loadData() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return;
 
     const data = JSON.parse(saved);
-    document.querySelectorAll('#page-report input, #page-report textarea').forEach(el => {
-        const key = el.name || el.id || el.dataset.key || el.outerHTML;
+    document.querySelectorAll('#lab-report input, #lab-report textarea').forEach(el => {
+        const key = el.dataset.saveKey;
         if (data[key] !== undefined) {
             if (el.type === 'checkbox') {
                 el.checked = data[key];
@@ -948,16 +965,20 @@ function loadFormData() {
     });
 }
 
-// Attach listeners
+// Init
 document.addEventListener('DOMContentLoaded', () => {
-    loadFormData();
+    assignKeys();
+    loadData();
 
-    document.querySelectorAll('#page-report input, #page-report textarea').forEach(el => {
-        el.addEventListener('input', saveFormData);
-        el.addEventListener('change', saveFormData);
+    document.querySelectorAll('#lab-report input, #lab-report textarea').forEach(el => {
+        el.addEventListener('input', saveData);
+        el.addEventListener('change', saveData);
     });
 });
 </script>
+
+</div>
+</body>
 
 </body>
 </html>
