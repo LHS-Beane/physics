@@ -784,9 +784,11 @@
                                     <label><input type="checkbox"> Excess mass</label>
                                     <label><input type="checkbox"> Poor stability</label>
                                 </div>
-                                <div class="border border-dashed border-gray-400 p-4 h-32 bg-gray-50 text-center flex items-center justify-center text-gray-400">
-                                    (Sketch/Describe One Modification Here)
-                                </div>
+                              <textarea
+                              class="w-full h-40 bg-gray-50 border-2 border-dashed border-gray-400 p-3 text-sm"
+                              placeholder="Describe and/or sketch (with words) one specific modification you would make to improve performance. Be explicit about how it would reduce force, increase impact time, or reduce momentum."
+                                ></textarea>
+
                             </div>
                         </div>
                     </section>
@@ -905,6 +907,55 @@
             }
         });
     </script>
+    <script>
+/* =========================
+   LOCAL AUTOSAVE FOR STUDENTS
+   ========================= */
+
+const STORAGE_KEY = "eggdrop_lab_report_autosave";
+
+// Save data
+function saveFormData() {
+    const data = {};
+    document.querySelectorAll('#page-report input, #page-report textarea').forEach(el => {
+        if (el.type === 'checkbox') {
+            data[el.name || el.id || el.dataset.key || el.outerHTML] = el.checked;
+        } else {
+            data[el.name || el.id || el.dataset.key || el.outerHTML] = el.value;
+        }
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// Load data
+function loadFormData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+    document.querySelectorAll('#page-report input, #page-report textarea').forEach(el => {
+        const key = el.name || el.id || el.dataset.key || el.outerHTML;
+        if (data[key] !== undefined) {
+            if (el.type === 'checkbox') {
+                el.checked = data[key];
+            } else {
+                el.value = data[key];
+            }
+        }
+    });
+}
+
+// Attach listeners
+document.addEventListener('DOMContentLoaded', () => {
+    loadFormData();
+
+    document.querySelectorAll('#page-report input, #page-report textarea').forEach(el => {
+        el.addEventListener('input', saveFormData);
+        el.addEventListener('change', saveFormData);
+    });
+});
+</script>
+
 </body>
 </html>
 
