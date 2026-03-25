@@ -1,1 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optical Relay Engineering Lab</title>
+  <style>
+    :root {
+      --navy: #0f172a;
+      --blue: #1d4ed8;
+      --sky: #e0f2fe;
+      --cyan: #0891b2;
+      --amber: #f59e0b;
+      --green: #15803d;
+      --red: #b91c1c;
+      --slate: #334155;
+      --light: #f8fafc;
+      --card: #ffffff;
+      --border: #cbd5e1;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 30%, #eef2ff 100%);
+      color: var(--navy);
+      line-height: 1.55;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: white;
+      font-size: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a, .action-btn {
+      text-decoration: none;
+      color: var(--slate);
+      padding: 0.6rem 0.85rem;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid var(--border);
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .action-btn:hover {
+      transform: translateY(-1px);
+      border-color: #93c5fd;
+      color: var(--blue);
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem 1rem;
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    .hero-card, .card {
+      background: var(--card);
+      border: 1px solid rgba(148,163,184,0.28);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 2rem;
+      background: linear-gradient(145deg, #ffffff 0%, #eff6ff 100%);
+    }
+
+    .hero h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      font-size: 1.02rem;
+      color: var(--slate);
+      max-width: 70ch;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 1.2rem;
+    }
+
+    .tag {
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: white;
+      border: 1px solid #bfdbfe;
+      color: var(--blue);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--blue), #2563eb);
+      color: white;
+      border: none;
+    }
+
+    .primary:hover { color: white; }
+
+    .quick-panel {
+      padding: 1.35rem;
+      display: grid;
+      gap: 1rem;
+      background: linear-gradient(160deg, #082f49 0%, #0f172a 100%);
+      color: white;
+    }
+
+    .quick-panel h3 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 0.9rem;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      opacity: 0.82;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      margin-top: 0.25rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem 4rem;
+    }
+
+    .section {
+      margin-top: 1.2rem;
+      scroll-margin-top: 90px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.35rem, 2vw, 2rem);
+    }
+
+    .section-subtitle {
+      margin: 0.35rem 0 0;
+      color: var(--slate);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+    }
+
+    .span-12 { grid-column: span 12; }
+    .span-8 { grid-column: span 8; }
+    .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+
+    .card {
+      padding: 1.25rem;
+    }
+
+    .card h3, .card h4 {
+      margin-top: 0;
+      margin-bottom: 0.65rem;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #eff6ff, #ecfeff);
+      border: 1px solid #bfdbfe;
+    }
+
+    .warning {
+      background: linear-gradient(135deg, #fff7ed, #fffbeb);
+      border: 1px solid #fdba74;
+    }
+
+    .success {
+      background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+      border: 1px solid #86efac;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 0.75rem;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.55rem 0.7rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(148,163,184,0.22);
+    }
+
+    .lab-form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--slate);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.8rem 0.85rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font: inherit;
+      color: var(--navy);
+      transition: 0.2s ease;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 4px rgba(96,165,250,0.16);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid #dbeafe;
+      background: white;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.7rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.94rem;
+    }
+
+    th {
+      background: #eff6ff;
+      color: var(--blue);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    td input, td textarea, td select {
+      border-radius: 10px;
+      padding: 0.55rem 0.6rem;
+      font-size: 0.92rem;
+    }
+
+    .mini-note {
+      font-size: 0.88rem;
+      color: var(--slate);
+      margin-top: 0.4rem;
+    }
+
+    .diagram-box {
+      border: 2px dashed #93c5fd;
+      border-radius: 16px;
+      min-height: 220px;
+      background:
+        linear-gradient(to right, rgba(148,163,184,0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148,163,184,0.12) 1px, transparent 1px),
+        white;
+      background-size: 24px 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 1rem;
+      color: var(--slate);
+      font-weight: 600;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .role-card {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: white;
+      padding: 0.9rem;
+    }
+
+    .accordion {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    details {
+      background: white;
+      border: 1px solid rgba(148,163,184,0.3);
+      border-radius: 16px;
+      padding: 0.9rem 1rem;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .rubric-card {
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #fff, #f8fafc);
+    }
+
+    .footer {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding: 0 1rem 2rem;
+      color: var(--slate);
+      text-align: center;
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .span-8, .span-7, .span-6, .span-5, .span-4 { grid-column: span 12; }
+      .field-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .topbar-inner { align-items: flex-start; }
+      .hero-card, .card { padding: 1rem; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { gap: 0.4rem; }
+      .nav-links a, .action-btn { font-size: 0.82rem; padding: 0.55rem 0.75rem; }
+    }
+
+    @media print {
+      .topbar, .hero-actions, .quick-panel, .action-btn { display: none !important; }
+      body { background: white; }
+      .hero, main, .footer { max-width: 100%; padding: 0; }
+      .hero-card, .card, details { box-shadow: none; border: 1px solid #ccc; }
+      .section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">🔦</div>
+        <div>
+          <div>Optical Relay Engineering Lab</div>
+          <div style="font-size:0.82rem;color:#475569;font-weight:600;">Collaborative Laser + Mirror Design Challenge</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#day1">Day 1</a>
+        <a href="#day2">Day 2</a>
+        <a href="#day3">Day 3</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#rubric">Rubric</a>
+        <button class="action-btn" onclick="window.print()">Print Packet</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="tag" style="display:inline-flex;align-items:center;gap:0.35rem;">Whole-Class Physics + Engineering Project</div>
+      <h1>Guide a laser through the building using mirrors, mapping, and teamwork.</h1>
+      <p>
+        Each team is responsible for one hallway or corridor segment. Your job is to predict the beam path,
+        build a stable mirror system with K'Nex, communicate with neighboring teams, and deliver the beam to the next section.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">Law of Reflection</span>
+        <span class="tag">Scale Mapping</span>
+        <span class="tag">Engineering Design</span>
+        <span class="tag">Error Analysis</span>
+        <span class="tag">Team Communication</span>
+      </div>
+      <div class="hero-actions">
+        <a class="action-btn primary" href="#day1">Start Day 1 Planning</a>
+        <a class="action-btn" href="#analysis">Jump to Final Reflection</a>
+      </div>
+    </div>
+
+    <aside class="quick-panel">
+      <div>
+        <h3>Mission Snapshot</h3>
+        <p style="margin:0.45rem 0 0;opacity:0.92;">Your class must build one complete optical relay system. Every team section matters.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-label">Physics Focus</div>
+          <div class="stat-value">Reflection</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Build Tool</div>
+          <div class="stat-value">K’Nex Supports</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Challenge Type</div>
+          <div class="stat-value">Multi-Team Relay</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Final Goal</div>
+          <div class="stat-value">Hit the Target</div>
+        </div>
+      </div>
+      <div style="padding:0.9rem;border-radius:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+        <strong>Remember:</strong> a tiny mirror adjustment can create a huge change at the target.
+      </div>
+    </aside>
+  </section>
+
+  <main>
+    <section id="overview" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Lab Overview</h2>
+          <p class="section-subtitle">Read this first so your team understands the challenge, rules, and success criteria.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card span-7 highlight">
+          <h3>Essential Question</h3>
+          <p>How can multiple teams use the law of reflection to accurately guide a laser beam across a building?</p>
+
+          <h3>Learning Targets</h3>
+          <div class="checklist">
+            <div class="check-item"><input type="checkbox" /> <div>I can apply the law of reflection to predict light paths.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>I can create and use a scale map for a real space.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>I can design and build a stable mirror support system.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>I can communicate beam location and direction to another team.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>I can analyze why actual results may differ from predictions.</div></div>
+          </div>
+        </div>
+
+        <div class="card span-5 warning">
+          <h3>Safety Rules</h3>
+          <div class="checklist">
+            <div class="check-item"><input type="checkbox" /> <div>Never point a laser at a person’s eyes.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Do not look directly into the beam or a bright reflection.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Keep the beam within the teacher-approved height range.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>No holding mirrors by hand during the final run.</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Teacher approval is required before full-system testing.</div></div>
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <h3>Key Physics Idea</h3>
+          <p><strong>Law of Reflection:</strong> The angle of incidence equals the angle of reflection. Both angles are measured from the <strong>normal line</strong>, not from the mirror surface.</p>
+          <div class="diagram-box">
+            Use this space in class to sketch a mirror, a normal line, an incoming ray, and a reflected ray.
+          </div>
+          <div class="mini-note">Tip: Label the normal, angle of incidence, and angle of reflection clearly.</div>
+        </div>
+
+        <div class="card span-6 success">
+          <h3>Success Criteria</h3>
+          <ul>
+            <li>Your team accurately maps its hallway or corridor.</li>
+            <li>Your team predicts a usable beam path through its section.</li>
+            <li>Your mirror system is stable and adjustable.</li>
+            <li>Your team communicates the output beam clearly to the next team.</li>
+            <li>Your team documents revisions and explains errors.</li>
+          </ul>
+          <p><strong>Important:</strong> Your team is not only responsible for your own section. You are responsible for making your section work with the entire class relay.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Team Setup</h2>
+          <p class="section-subtitle">Assign roles before starting measurements and design work.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="field-grid">
+          <div>
+            <label for="studentName">Student Name</label>
+            <input id="studentName" type="text" placeholder="Enter your name" />
+          </div>
+          <div>
+            <label for="teamName">Team Name</label>
+            <input id="teamName" type="text" placeholder="Enter team name" />
+          </div>
+          <div>
+            <label for="corridorNum">Corridor / Section Number</label>
+            <input id="corridorNum" type="text" placeholder="Example: Hallway 3" />
+          </div>
+          <div>
+            <label for="classPeriod">Class Period</label>
+            <input id="classPeriod" type="text" placeholder="Example: 4th period" />
+          </div>
+        </div>
+
+        <h3 style="margin-top:1.2rem;">Suggested Team Roles</h3>
+        <div class="role-grid">
+          <div class="role-card"><strong>Lead Mapper</strong><br><span style="color:#475569;">Measures distances and helps create the scale map.</span></div>
+          <div class="role-card"><strong>Ray Tracer</strong><br><span style="color:#475569;">Sketches beam paths, normals, and mirror placement.</span></div>
+          <div class="role-card"><strong>Builder</strong><br><span style="color:#475569;">Leads K’Nex mirror support construction.</span></div>
+          <div class="role-card"><strong>Alignment Specialist</strong><br><span style="color:#475569;">Fine-tunes mirror position during testing.</span></div>
+          <div class="role-card"><strong>Communicator</strong><br><span style="color:#475569;">Coordinates with neighboring teams during handoff.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="day1" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Day 1 — Survey and Design</h2>
+          <p class="section-subtitle">Measure your section, create a scale map, and design a beam pathway your team can actually build.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card span-8">
+          <h3>Step 1: Corridor Measurements</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Measurement</th>
+                <th>Value</th>
+                <th>Units</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Corridor length</td>
+                <td><input type="number" /></td>
+                <td><input type="text" placeholder="m, cm, ft" /></td>
+                <td><input type="text" placeholder="Wall to wall" /></td>
+              </tr>
+              <tr>
+                <td>Corridor width</td>
+                <td><input type="number" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td>Beam entry location</td>
+                <td><input type="text" placeholder="Distance from wall/door" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" placeholder="Where the beam enters" /></td>
+              </tr>
+              <tr>
+                <td>Beam exit location</td>
+                <td><input type="text" placeholder="Distance from wall/door" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" placeholder="Where the beam must leave" /></td>
+              </tr>
+              <tr>
+                <td>Beam height</td>
+                <td><input type="number" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" placeholder="Keep consistent if required" /></td>
+              </tr>
+              <tr>
+                <td>Obstacle distances</td>
+                <td><input type="text" placeholder="List multiple if needed" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" placeholder="Doors, corners, furniture, etc." /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card span-4 highlight">
+          <h3>Measurement Tips</h3>
+          <ul>
+            <li>Measure from fixed reference points like walls, corners, or door frames.</li>
+            <li>Keep units consistent.</li>
+            <li>Double-check critical measurements before drawing your map.</li>
+            <li>Record where the beam must enter and leave your section.</li>
+          </ul>
+          <p class="mini-note">Good maps lead to better beam predictions.</p>
+        </div>
+
+        <div class="card span-6">
+          <h3>Step 2: Scale Map</h3>
+          <label for="scaleChoice">Chosen Scale</label>
+          <input id="scaleChoice" type="text" placeholder="Example: 1 square = 0.5 m" />
+          <div class="diagram-box" style="min-height:320px;margin-top:0.8rem;">
+            Draw a top-down map of your corridor here or use this as a guide for a notebook sketch.
+            Include walls, doors, obstacles, beam entry point, and beam exit point.
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <h3>Step 3: Predicted Beam Path</h3>
+          <div class="diagram-box" style="min-height:320px;">
+            Sketch your predicted laser path. Show each mirror, the normal line, the incident ray, and the reflected ray.
+          </div>
+          <label for="beamReasoning" style="margin-top:0.8rem;">Explain why your design should work</label>
+          <textarea id="beamReasoning" placeholder="Describe how the law of reflection helps your team guide the beam through the corridor."></textarea>
+        </div>
+
+        <div class="card span-7">
+          <h3>Step 4: Mirror Planning Table</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Mirror #</th>
+                <th>Location</th>
+                <th>Purpose</th>
+                <th>Estimated Angle / Orientation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card span-5 success">
+          <h3>Step 5: Team Handoff Plan</h3>
+          <div class="lab-form">
+            <div>
+              <label for="incoming">Incoming Beam (from previous team)</label>
+              <textarea id="incoming" placeholder="Location, direction, and height of the incoming beam"></textarea>
+            </div>
+            <div>
+              <label for="outgoing">Outgoing Beam (to next team)</label>
+              <textarea id="outgoing" placeholder="Location, direction, and height of the outgoing beam"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <h3>Step 6: K’Nex Build Sketch</h3>
+          <div class="diagram-box" style="min-height:280px;">
+            Sketch your mirror support design here. Include the base, vertical support, and how the mirror will stay stable.
+          </div>
+        </div>
+
+        <div class="card span-6 warning">
+          <h3>Teacher Approval Checkpoint</h3>
+          <div class="checklist">
+            <div class="check-item"><input type="checkbox" /> <div>Measurements recorded</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Scale map completed</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Beam path drawn clearly</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Mirror plan is realistic</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Handoff plan written for neighboring teams</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Build plan approved</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="day2" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Day 2 — Build and Test</h2>
+          <p class="section-subtitle">Construct your mirror system, test your section, and document every meaningful change.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card span-8">
+          <h3>Trial Data</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Trial #</th>
+                <th>Hit / Miss</th>
+                <th>Distance from Intended Exit Point</th>
+                <th>What Happened?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  <select>
+                    <option></option>
+                    <option>Hit</option>
+                    <option>Miss</option>
+                    <option>Partial</option>
+                  </select>
+                </td>
+                <td><input type="text" /></td>
+                <td><textarea></textarea></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <select>
+                    <option></option>
+                    <option>Hit</option>
+                    <option>Miss</option>
+                    <option>Partial</option>
+                  </select>
+                </td>
+                <td><input type="text" /></td>
+                <td><textarea></textarea></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>
+                  <select>
+                    <option></option>
+                    <option>Hit</option>
+                    <option>Miss</option>
+                    <option>Partial</option>
+                  </select>
+                </td>
+                <td><input type="text" /></td>
+                <td><textarea></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card span-4 highlight">
+          <h3>Build Reminders</h3>
+          <ul>
+            <li>Your mirror supports must stand on their own.</li>
+            <li>Small wobbles can become big beam errors.</li>
+            <li>Change only one thing at a time when testing.</li>
+            <li>Talk with the next team after each major adjustment.</li>
+          </ul>
+        </div>
+
+        <div class="card span-6">
+          <h3>Adjustment Log</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Change Made</th>
+                <th>Reason</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+              <tr>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card span-6 success">
+          <h3>Communication Log</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Team Contacted</th>
+                <th>Problem or Question</th>
+                <th>Solution or Decision</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" /></td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+              <tr>
+                <td><input type="text" /></td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="day3" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Day 3 — Final System Run</h2>
+          <p class="section-subtitle">Test your section as part of the complete class relay and evaluate how well your design performed.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card span-6">
+          <h3>Final Run Result</h3>
+          <div class="field-grid">
+            <div>
+              <label for="finalResult">Did your section successfully pass the beam?</label>
+              <select id="finalResult">
+                <option></option>
+                <option>Yes</option>
+                <option>No</option>
+                <option>Partially</option>
+              </select>
+            </div>
+            <div>
+              <label for="finalError">Distance from expected exit point</label>
+              <input id="finalError" type="text" placeholder="Example: 7 cm high and 4 cm left" />
+            </div>
+          </div>
+          <label for="finalNotes" style="margin-top:0.8rem;">What happened during the final run?</label>
+          <textarea id="finalNotes"></textarea>
+        </div>
+
+        <div class="card span-6 warning">
+          <h3>Whole-Class Reflection Prompt</h3>
+          <p>Even if your section worked well, the entire relay may still fail if earlier or later sections drift off target. Think like a systems engineer: how did your team contribute to the class result?</p>
+          <textarea placeholder="Write a brief systems-level reflection here."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section id="analysis" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Analysis and Reflection</h2>
+          <p class="section-subtitle">This is where the physics thinking shows up. Use complete ideas, not one-word answers.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card span-7">
+          <h3>Predicted vs Actual</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Aspect</th>
+                <th>Prediction</th>
+                <th>Actual Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Beam path through corridor</td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+              <tr>
+                <td>Mirror orientation</td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+              <tr>
+                <td>Exit location and direction</td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card span-5 highlight">
+          <h3>Big Error Sources</h3>
+          <div class="checklist">
+            <div class="check-item"><input type="checkbox" /> <div>Measurement error</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Mirror alignment error</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Unstable K’Nex structure</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Incorrect ray prediction</div></div>
+            <div class="check-item"><input type="checkbox" /> <div>Communication breakdown</div></div>
+          </div>
+          <label for="errorExplain" style="margin-top:0.8rem;">Explain the biggest source of error</label>
+          <textarea id="errorExplain"></textarea>
+        </div>
+
+        <div class="card span-6">
+          <h3>Critical Thinking Questions</h3>
+          <label>1. Why can a tiny mirror angle change cause a large shift at the target?</label>
+          <textarea></textarea>
+          <label>2. Which mirror in your section required the most precision? Why?</label>
+          <textarea></textarea>
+          <label>3. How did the law of reflection help your team make predictions?</label>
+          <textarea></textarea>
+        </div>
+
+        <div class="card span-6 success">
+          <h3>Engineering Reflection</h3>
+          <label>4. How did communication with neighboring teams affect your success?</label>
+          <textarea></textarea>
+          <label>5. What would you change if you redesigned your section?</label>
+          <textarea></textarea>
+          <label>6. What did this activity teach you about engineering design?</label>
+          <textarea></textarea>
+        </div>
+
+        <div class="card span-12">
+          <h3>Personal Contribution</h3>
+          <div class="field-grid">
+            <div>
+              <label>What role did you play most often?</label>
+              <input type="text" placeholder="Mapper, builder, communicator, etc." />
+            </div>
+            <div>
+              <label>What was your strongest contribution?</label>
+              <input type="text" placeholder="Example: precise measurements" />
+            </div>
+          </div>
+          <label style="margin-top:0.8rem;">Describe how you helped your team succeed.</label>
+          <textarea></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Helpful Reference Panel</h2>
+          <p class="section-subtitle">Keep these reminders in mind while you work.</p>
+        </div>
+      </div>
+      <div class="accordion">
+        <details open>
+          <summary>What should a good corridor plan include?</summary>
+          <p>A strong plan includes a clear entry point, an exit point, realistic mirror locations, a scale map, and a beam path that avoids obstacles while still being adjustable during testing.</p>
+        </details>
+        <details>
+          <summary>Why do we draw a normal line?</summary>
+          <p>The normal line is the reference line used to measure the angle of incidence and the angle of reflection. If you measure from the mirror surface instead, your angles will be wrong.</p>
+        </details>
+        <details>
+          <summary>What if our first design does not work?</summary>
+          <p>That is part of engineering. Record the problem, make a controlled change, test again, and explain why the redesign improved the result.</p>
+        </details>
+        <details>
+          <summary>How can teams work better together?</summary>
+          <p>Use exact language when describing the beam: location, direction, and height. Avoid vague directions like “move it a little left.”</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="rubric" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Student Rubric</h2>
+          <p class="section-subtitle">This is how your team and your thinking will be evaluated.</p>
+        </div>
+      </div>
+      <div class="rubric-grid">
+        <div class="rubric-card">
+          <h3>Map and Measurements</h3>
+          <p>Accurate distances, usable scale map, clear beam entry and exit locations.</p>
+        </div>
+        <div class="rubric-card">
+          <h3>Physics Application</h3>
+          <p>Correct use of the law of reflection, normals, and logical beam predictions.</p>
+        </div>
+        <div class="rubric-card">
+          <h3>Design and Build</h3>
+          <p>Stable mirror supports, thoughtful construction, and realistic planning.</p>
+        </div>
+        <div class="rubric-card">
+          <h3>Data and Revisions</h3>
+          <p>Clear trial data, meaningful adjustments, and strong revision notes.</p>
+        </div>
+        <div class="rubric-card">
+          <h3>Communication</h3>
+          <p>Effective handoff planning and collaboration with neighboring teams.</p>
+        </div>
+        <div class="rubric-card">
+          <h3>Analysis and Reflection</h3>
+          <p>Thoughtful error analysis, evidence-based explanations, and complete reflection responses.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    Optical Relay Engineering Lab • Student Interactive Packet • Ready for classroom use or GitHub Pages hosting
+  </div>
+</body>
+</html>
 
